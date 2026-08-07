@@ -1,0 +1,55 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.csproj.user
+*.userosscache
+*.sln.docstates
+
+# .NET build output
+bin/
+obj/
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
+**/publish/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+~$*
+
+# Test output
+TestResults/
+*.coverage
+coverage/
+
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+
+*.pfx
+*.pem
+*.key
+
+# Local database files
+*.mdf
+*.ldf
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploaded CV files
+**/Storage/CVs/*
+!**/Storage/CVs/.gitkeep
+
+# Frontend packages
+node_modules/
+
+# Operating-system files
+Thumbs.db
+.DS_Store

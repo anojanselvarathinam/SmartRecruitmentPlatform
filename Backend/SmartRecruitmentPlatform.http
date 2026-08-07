@@ -1,0 +1,6 @@
+@SmartRecruitmentPlatform_HostAddress = http://localhost:5090
+
+GET {{SmartRecruitmentPlatform_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
