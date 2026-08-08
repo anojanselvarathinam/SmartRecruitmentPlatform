@@ -4,6 +4,10 @@ using SmartRecruitmentPlatform.Backend.Services.Interfaces;
 using SmartRecruitmentPlatform.Backend.Services.Implementations;
 using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
 using SmartRecruitmentPlatform.Backend.Repositories.Implementations;
+using SmartRecruitmentPlatform.Backend.Repositories.Admin.Implementation;
+using SmartRecruitmentPlatform.Backend.Repositories.Admin.Interfaces;
+using SmartRecruitmentPlatform.Backend.Services.Admin.Implementation;
+using SmartRecruitmentPlatform.Backend.Services.Admin.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +20,10 @@ builder.Configuration
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 // Add services to the container.
 builder.Services.AddControllers();
