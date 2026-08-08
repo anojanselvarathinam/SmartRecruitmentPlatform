@@ -21,5 +21,6 @@ namespace SmartRecruitmentPlatform.Backend.Models.Authentication
 
         [Required]
         public string Role { get; set; } = string.Empty;
+        public bool IsActive { get; internal set; }
     }
 }
