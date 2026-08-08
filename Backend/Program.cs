@@ -5,6 +5,10 @@ using SmartRecruitmentPlatform.Backend.Data;
 using SmartRecruitmentPlatform.Backend.Repositories.JobMatching;
 using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
 using SmartRecruitmentPlatform.Backend.Repositories.Implementations;
+using SmartRecruitmentPlatform.Backend.Repositories.Admin.Implementation;
+using SmartRecruitmentPlatform.Backend.Repositories.Admin.Interfaces;
+using SmartRecruitmentPlatform.Backend.Services.Admin.Implementation;
+using SmartRecruitmentPlatform.Backend.Services.Admin.Interfaces;
 using SmartRecruitmentPlatform.Backend.Services.JobMatching;
 using SmartRecruitmentPlatform.Backend.Services.Interfaces;
 using SmartRecruitmentPlatform.Backend.Services.Implementations;
@@ -28,6 +32,11 @@ builder.Configuration
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+
+builder.Services.AddScoped<IAdminService, AdminService>();
+
+// Add services to the container.
 // Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
