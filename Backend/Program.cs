@@ -1,54 +1,85 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+
+using SmartRecruitmentPlatform.Backend.Data;
 using SmartRecruitmentPlatform.Backend.Repositories.JobMatching;
+using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
+using SmartRecruitmentPlatform.Backend.Repositories.Implementations;
 using SmartRecruitmentPlatform.Backend.Services.JobMatching;
+using SmartRecruitmentPlatform.Backend.Services.Interfaces;
+using SmartRecruitmentPlatform.Backend.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// The original repository keeps appsettings under Backend.
-builder.Configuration.AddJsonFile(
-    "Backend/appsettings.json",
-    optional: false,
-    reloadOnChange: true);
+// Configuration
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile(
+        "Backend/appsettings.json",
+        optional: false,
+        reloadOnChange: true)
+    .AddJsonFile(
+        "Backend/appsettings.Development.json",
+        optional: true,
+        reloadOnChange: true)
+    .AddEnvironmentVariables();
 
+// Authentication
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
+// Database
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
+
+// Controllers
 builder.Services.AddControllers();
+
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Member 4 Matching Weights
 builder.Services.Configure<MatchingWeightOptions>(
-    builder.Configuration.GetSection("Member4MatchingWeights"));
+    builder.Configuration.GetSection("Member4MatchingWeights")
+);
 
-// Self-contained demo data/repositories.
-// Replace these with the final EF Core repositories when Members 2/3 DB entities are ready.
+// Job Matching Repositories
 builder.Services.AddSingleton<IJobRepository, DemoJobRepository>();
 builder.Services.AddSingleton<IJobSeekerProfileRepository, DemoJobSeekerProfileRepository>();
 builder.Services.AddSingleton<IApplicationRepository, JsonApplicationRepository>();
 
+// Job Matching Services
 builder.Services.AddScoped<IMatchScoreService, MatchScoreService>();
 builder.Services.AddScoped<IJobMatchingService, JobMatchingService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 
 var app = builder.Build();
 
-// Keep Swagger available in this demo so the API can be tested directly.
+// Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
 
-var frontendPath = Path.Combine(app.Environment.ContentRootPath, "Frontend");
-if (!Directory.Exists(frontendPath))
-{
-    throw new DirectoryNotFoundException(
-        $"Frontend directory not found: {frontendPath}");
-}
+// Frontend static files
+var frontendPath = Path.Combine(
+    app.Environment.ContentRootPath,
+    "Frontend"
+);
 
-app.UseStaticFiles(new StaticFileOptions
+if (Directory.Exists(frontendPath))
 {
-    FileProvider = new PhysicalFileProvider(frontendPath),
-    RequestPath = ""
-});
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(frontendPath),
+        RequestPath = ""
+    });
+}
 
 app.MapControllers();
 
-app.MapGet("/", () => Results.Redirect("/pages/JobMatching/jobs.html"));
+// Open Swagger when opening localhost
+app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.Run();
-

@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "Id": 1,
+    "JobId": 1,
+    "JobSeekerId": 1,
+    "Status": "Applied",
+    "MatchScoreAtApplication": 90,
+    "AppliedAtUtc": "2026-08-08T08:50:35.8347709Z"
+  }
+]
