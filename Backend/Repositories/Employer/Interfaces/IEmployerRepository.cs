@@ -1,6 +1,17 @@
-﻿namespace SmartRecruitmentPlatform.Backend.Repositories.Employer.Interfaces
+﻿using SmartRecruitmentPlatform.Backend.Models;
+
+namespace SmartRecruitmentPlatform.Backend.Repositories.Interfaces
 {
-    public class IEmployerRepository
+    public interface IEmployerRepository
     {
+        Task<Employer?> GetByIdAsync(int employerId);
+
+        Task<Employer?> GetByEmailAsync(string email);
+
+        Task<Employer> CreateAsync(Employer employer);
+
+        Task<bool> EmailExistsAsync(string email);
+
+        Task UpdateAsync(Employer employer);
     }
 }

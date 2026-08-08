@@ -1,4 +1,4 @@
-﻿namespace SmartRecruitmentPlatform.Backend.Models.Employer
+﻿namespace SmartRecruitmentPlatform.Backend.Models
 {
     public class Employer
     {
@@ -11,8 +11,5 @@
         public string PasswordHash { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-        // Navigation Property
-        public Company? Company { get; set; }
     }
 }
