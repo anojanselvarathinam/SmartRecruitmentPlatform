@@ -2,8 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 
 using SmartRecruitmentPlatform.Backend.Data;
-
-// Auth
+using SmartRecruitmentPlatform.Backend.Repositories.JobMatching;
 using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
 using SmartRecruitmentPlatform.Backend.Repositories.Implementations;
 using SmartRecruitmentPlatform.Backend.Services.Interfaces;
@@ -119,9 +118,7 @@ builder.Services.AddScoped<
     ICompanyRepository,
     CompanyRepository>();
 
-builder.Services.AddScoped<
-    EmployerJobRepository,
-    EmployerJobRepositoryImplementation>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 builder.Services.AddScoped<
     EmployerApplicationRepository,
@@ -131,6 +128,9 @@ builder.Services.AddScoped<
     IContactRequestRepository,
     ContactRequestRepository>();
 
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Job Matching
 
@@ -197,6 +197,8 @@ var frontendPath = Path.Combine(
     app.Environment.ContentRootPath,
     "Frontend");
 
+app.UseAuthentication();
+app.UseAuthorization();
 if (Directory.Exists(frontendPath))
 {
     app.UseStaticFiles(
