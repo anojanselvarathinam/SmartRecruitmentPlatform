@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+
 using SmartRecruitmentPlatform.Backend.Data;
+using SmartRecruitmentPlatform.Backend.Repositories.JobMatching;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -7,21 +10,34 @@ using SmartRecruitmentPlatform.Backend.Services.Interfaces;
 using SmartRecruitmentPlatform.Backend.Services.Implementations;
 using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
 using SmartRecruitmentPlatform.Backend.Repositories.Implementations;
+using SmartRecruitmentPlatform.Backend.Repositories.Admin.Implementation;
+using SmartRecruitmentPlatform.Backend.Repositories.Admin.Interfaces;
+using SmartRecruitmentPlatform.Backend.Services.Admin.Implementation;
+using SmartRecruitmentPlatform.Backend.Services.Admin.Interfaces;
+using SmartRecruitmentPlatform.Backend.Services.JobMatching;
+using SmartRecruitmentPlatform.Backend.Services.Interfaces;
+using SmartRecruitmentPlatform.Backend.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuration
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("Backend/appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile("Backend/appsettings.Development.json", optional: true, reloadOnChange: true)
+    .AddJsonFile(
+        "Backend/appsettings.json",
+        optional: false,
+        reloadOnChange: true)
+    .AddJsonFile(
+        "Backend/appsettings.Development.json",
+        optional: true,
+        reloadOnChange: true)
     .AddEnvironmentVariables();
 
-
+// Authentication
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
-// Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -44,10 +60,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IAdminService, AdminService>();
 
-// Learn more about configuring Swagger/OpenAPI
+// Add services to the container.
+// Database
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
+
+// Controllers
+builder.Services.AddControllers();
+
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -77,21 +102,47 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+// Member 4 Matching Weights
+builder.Services.Configure<MatchingWeightOptions>(
+    builder.Configuration.GetSection("Member4MatchingWeights")
+);
+
+// Job Matching Repositories
+builder.Services.AddSingleton<IJobRepository, DemoJobRepository>();
+builder.Services.AddSingleton<IJobSeekerProfileRepository, DemoJobSeekerProfileRepository>();
+builder.Services.AddSingleton<IApplicationRepository, JsonApplicationRepository>();
+
+// Job Matching Services
+builder.Services.AddScoped<IMatchScoreService, MatchScoreService>();
+builder.Services.AddScoped<IJobMatchingService, JobMatchingService>();
+builder.Services.AddScoped<IApplicationService, ApplicationService>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Swagger
+app.UseSwagger();
+app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+// Frontend static files
+var frontendPath = Path.Combine(
+    app.Environment.ContentRootPath,
+    "Frontend"
+);
 
 app.UseAuthentication();
 app.UseAuthorization();
+if (Directory.Exists(frontendPath))
+{
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(frontendPath),
+        RequestPath = ""
+    });
+}
 
 app.MapControllers();
 
-app.Run();
+// Open Swagger when opening localhost
+app.MapGet("/", () => Results.Redirect("/swagger"));
 
+app.Run();
