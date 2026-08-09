@@ -3,24 +3,55 @@ using Microsoft.Extensions.FileProviders;
 
 using SmartRecruitmentPlatform.Backend.Data;
 using SmartRecruitmentPlatform.Backend.Repositories.JobMatching;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using SmartRecruitmentPlatform.Backend.Services.Interfaces;
-using SmartRecruitmentPlatform.Backend.Services.Implementations;
 using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
 using SmartRecruitmentPlatform.Backend.Repositories.Implementations;
-using SmartRecruitmentPlatform.Backend.Repositories.Admin.Implementation;
-using SmartRecruitmentPlatform.Backend.Repositories.Admin.Interfaces;
-using SmartRecruitmentPlatform.Backend.Services.Admin.Implementation;
-using SmartRecruitmentPlatform.Backend.Services.Admin.Interfaces;
-using SmartRecruitmentPlatform.Backend.Services.JobMatching;
 using SmartRecruitmentPlatform.Backend.Services.Interfaces;
 using SmartRecruitmentPlatform.Backend.Services.Implementations;
+
+// Employer
+using SmartRecruitmentPlatform.Backend.Repositories.Employer.Interfaces;
+using SmartRecruitmentPlatform.Backend.Repositories.Employer.Implementation;
+
+using SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces;
+using SmartRecruitmentPlatform.Backend.Services.Employer.Implementations;
+
+// Employer aliases
+using EmployerJobRepository =
+    SmartRecruitmentPlatform.Backend.Repositories.Employer.Interfaces.IJobRepository;
+
+using EmployerJobRepositoryImplementation =
+    SmartRecruitmentPlatform.Backend.Repositories.Employer.Implementation.JobRepository;
+
+using EmployerApplicationRepository =
+    SmartRecruitmentPlatform.Backend.Repositories.Employer.Interfaces.IApplicationRepository;
+
+using EmployerApplicationRepositoryImplementation =
+    SmartRecruitmentPlatform.Backend.Repositories.Employer.Implementation.ApplicationRepository;
+
+
+// Job Matching
+using SmartRecruitmentPlatform.Backend.Repositories.JobMatching;
+using SmartRecruitmentPlatform.Backend.Services.JobMatching;
+
+// Job Matching aliases
+using MatchingJobRepository =
+    SmartRecruitmentPlatform.Backend.Repositories.JobMatching.IJobRepository;
+
+using MatchingApplicationRepository =
+    SmartRecruitmentPlatform.Backend.Repositories.JobMatching.IApplicationRepository;
+
+using MatchingApplicationService =
+    SmartRecruitmentPlatform.Backend.Services.JobMatching.IApplicationService;
+
+using MatchingApplicationServiceImplementation =
+    SmartRecruitmentPlatform.Backend.Services.JobMatching.ApplicationService;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Configuration
+
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile(
@@ -33,116 +64,154 @@ builder.Configuration
         reloadOnChange: true)
     .AddEnvironmentVariables();
 
+
+// Controllers
+
+builder.Services.AddControllers();
+
+
+// Database
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString(
+            "DefaultConnection")));
+
+
 // Authentication
+
 builder.Services.AddScoped<IAuthService, AuthService>();
+
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
-builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        var key = builder.Configuration["JwtSettings:Key"];
-        var issuer = builder.Configuration["JwtSettings:Issuer"];
-        var audience = builder.Configuration["JwtSettings:Audience"];
+// Employer Services
 
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
+builder.Services.AddScoped<
+    IEmployerService,
+    EmployerService>();
 
-            ValidIssuer = issuer,
-            ValidAudience = audience,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(key!))
-        };
-    });
+builder.Services.AddScoped<
+    ICompanyService,
+    CompanyService>();
+
+builder.Services.AddScoped<
+    SmartRecruitmentPlatform.Backend.Services.Interfaces.IApplicationService,
+    SmartRecruitmentPlatform.Backend.Services.Implementations.ApplicationService>();
+
+builder.Services.AddScoped<
+    SmartRecruitmentPlatform.Backend.Services.Interfaces.IContactRequestService,
+    SmartRecruitmentPlatform.Backend.Services.Implementations.ContactRequestService>();
+
+builder.Services.AddScoped<
+    SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces.IJobService,
+    SmartRecruitmentPlatform.Backend.Services.Employer.Implementations.JobService>();
+
+
+// Employer Repositories
+
+builder.Services.AddScoped<
+    IEmployerRepository,
+    EmployerRepository>();
+
+builder.Services.AddScoped<
+    ICompanyRepository,
+    CompanyRepository>();
 
 builder.Services.AddScoped<IAdminService, AdminService>();
 
-// Add services to the container.
-// Database
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    ));
+builder.Services.AddScoped<
+    EmployerApplicationRepository,
+    EmployerApplicationRepositoryImplementation>();
 
-// Controllers
-builder.Services.AddControllers();
+builder.Services.AddScoped<
+    IContactRequestRepository,
+    ContactRequestRepository>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Enter JWT token here."
-    });
+builder.Services.AddSwaggerGen();
 
-    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-    {
-        {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-            {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference
-                {
-                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] { }
-        }
-    });
-});
+// Job Matching
 
-// Member 4 Matching Weights
 builder.Services.Configure<MatchingWeightOptions>(
-    builder.Configuration.GetSection("Member4MatchingWeights")
-);
+    builder.Configuration.GetSection(
+        "Member4MatchingWeights"));
+
 
 // Job Matching Repositories
-builder.Services.AddSingleton<IJobRepository, DemoJobRepository>();
-builder.Services.AddSingleton<IJobSeekerProfileRepository, DemoJobSeekerProfileRepository>();
-builder.Services.AddSingleton<IApplicationRepository, JsonApplicationRepository>();
+
+builder.Services.AddSingleton<
+    MatchingJobRepository,
+    DemoJobRepository>();
+
+builder.Services.AddSingleton<
+    IJobSeekerProfileRepository,
+    DemoJobSeekerProfileRepository>();
+
+builder.Services.AddSingleton<
+    MatchingApplicationRepository,
+    JsonApplicationRepository>();
+
 
 // Job Matching Services
-builder.Services.AddScoped<IMatchScoreService, MatchScoreService>();
-builder.Services.AddScoped<IJobMatchingService, JobMatchingService>();
-builder.Services.AddScoped<IApplicationService, ApplicationService>();
+
+builder.Services.AddScoped<
+    IMatchScoreService,
+    MatchScoreService>();
+
+builder.Services.AddScoped<
+    IJobMatchingService,
+    JobMatchingService>();
+
+builder.Services.AddScoped<
+    MatchingApplicationService,
+    MatchingApplicationServiceImplementation>();
+
+
+// Swagger
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen();
+
+
+// Build Application
 
 var app = builder.Build();
 
-// Swagger
-app.UseSwagger();
-app.UseSwaggerUI();
+
+// HTTP Pipeline
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+
+    app.UseSwaggerUI();
+}
+
 
 // Frontend static files
+
 var frontendPath = Path.Combine(
     app.Environment.ContentRootPath,
-    "Frontend"
-);
+    "Frontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
 if (Directory.Exists(frontendPath))
 {
-    app.UseStaticFiles(new StaticFileOptions
-    {
-        FileProvider = new PhysicalFileProvider(frontendPath),
-        RequestPath = ""
-    });
+    app.UseStaticFiles(
+        new StaticFileOptions
+        {
+            FileProvider =
+                new PhysicalFileProvider(frontendPath),
+
+            RequestPath = ""
+        });
 }
 
-app.MapControllers();
 
-// Open Swagger when opening localhost
-app.MapGet("/", () => Results.Redirect("/swagger"));
+app.MapControllers();
 
 app.Run();
