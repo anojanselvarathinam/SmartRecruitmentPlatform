@@ -19,11 +19,15 @@ using SmartRecruitmentPlatform.Backend.Services.Implementations;
 
 using SmartRecruitmentPlatform.Backend.Services.Admin.Interfaces;
 using SmartRecruitmentPlatform.Backend.Services.Admin.Implementation;
+using SmartRecruitmentPlatform.Backend.Services.JobMatching;
+// Job Seeker
+using SmartRecruitmentPlatform.Backend.Repositories.JobSeeker.Interfaces;
+using SmartRecruitmentPlatform.Backend.Repositories.JobSeeker.Implementation;
 
+using SmartRecruitmentPlatform.Backend.Services.JobSeeker.Interfaces;
+using SmartRecruitmentPlatform.Backend.Services.JobSeeker.Implementation;
 using SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces;
 using SmartRecruitmentPlatform.Backend.Services.Employer.Implementations;
-
-using SmartRecruitmentPlatform.Backend.Services.JobMatching;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -122,6 +126,27 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
     IJobService,
     JobService>();
+// Job Seeker Services
+
+builder.Services.AddScoped<
+IJobSeekerService,
+JobSeekerService>();
+
+builder.Services.AddScoped<
+ISkillService,
+SkillService>();
+
+builder.Services.AddScoped<
+IEducationService,
+EducationService>();
+
+builder.Services.AddScoped<
+IExperienceService,
+ExperienceService>();
+
+builder.Services.AddScoped<
+ICvService,
+CvService>();
 
 
 // Employer Repositories
@@ -145,6 +170,27 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
     SmartRecruitmentPlatform.Backend.Repositories.Interfaces.IJobRepository,
     JobRepository>();
+// Job Seeker Repositories
+
+builder.Services.AddScoped<
+IJobSeekerRepository,
+JobSeekerRepository>();
+
+builder.Services.AddScoped<
+ISkillRepository,
+SkillRepository>();
+
+builder.Services.AddScoped<
+IEducationRepository,
+EducationRepository>();
+
+builder.Services.AddScoped<
+IExperienceRepository,
+ExperienceRepository>();
+
+builder.Services.AddScoped<
+ICvRepository,
+CvRepository>();
 
 
 // Admin
