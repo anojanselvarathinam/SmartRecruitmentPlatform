@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentSync — Create Account</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/auth.css">
+</head>
+<body class="register-page">
+    <main class="page-shell">
+        <section class="hero">
+            <div class="brand">
+                <div class="brand-mark"><span class="head"></span><span class="wing left"></span><span class="body"></span><span class="wing right"></span></div>
+                <div><div class="brand-name">Talent<span>Sync</span></div><div class="tagline">Smart Recruitment Platform</div></div>
+            </div>
+            <div class="hero-copy">
+                <h1>Start Your Journey.<br>Build Your <span>Future.</span></h1>
+                <div class="gold-line"></div>
+                <p>Create your profile and connect with<br>the right people, opportunities and<br>possibilities.</p>
+                <div class="feature-grid">
+                    <article class="feature"><div class="feature-icon">♙</div><h3>Find Top Talent</h3><p>Discover skilled<br>candidates faster</p></article>
+                    <article class="feature"><div class="feature-icon target">◎</div><h3>Smart Matching</h3><p>Match the right people<br>to the right jobs</p></article>
+                    <article class="feature"><div class="feature-icon chart">▥</div><h3>Data Insights</h3><p>Make data-driven<br>recruitment decisions</p></article>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-area">
+            <form class="register-card" id="registerForm">
+                <header class="card-header">
+                    <div class="user-badge">♙</div>
+                    <div><h2>Create Your Account</h2><p>Fill in the details to get started</p></div>
+                </header>
+
+                <fieldset class="account-type">
+                    <legend>I am a</legend>
+                    <div class="type-grid">
+                        <label class="type-option">
+                            <input type="radio" name="role" value="JobSeeker" checked>
+                            <span class="type-card"><span class="type-icon">♙</span><span><b>Job Seeker</b><small>Looking for opportunities</small></span><i></i></span>
+                        </label>
+                        <label class="type-option">
+                            <input type="radio" name="role" value="Employer">
+                            <span class="type-card"><span class="type-icon">▣</span><span><b>Employer</b><small>Hiring great talent</small></span><i></i></span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <div class="field-grid">
+                    <div class="field"><label for="fullName">Full Name</label><div class="input-wrap"><span>♙</span><input id="fullName" type="text" placeholder="Enter your full name" autocomplete="name"></div></div>
+                    <div class="field"><label for="email">Email</label><div class="input-wrap"><span>✉</span><input id="email" type="email" placeholder="Enter your email"></div></div>
+                    <div class="field"><label for="password">Password</label><div class="input-wrap"><span>🔒</span><input id="password" type="password" placeholder="Create a password" autocomplete="new-password"><span id="togglePassword" class="password-toggle" role="button" aria-label="Show or hide password" tabindex="0">◉</span></div><small>Minimum 6 characters</small></div>
+                    <div class="field"><label for="confirmPassword">Confirm Password</label><div class="input-wrap"><span>🔒</span><input id="confirmPassword" type="password" placeholder="Confirm your password" autocomplete="new-password"><span id="toggleConfirmPassword" class="password-toggle" role="button" aria-label="Show or hide confirmed password" tabindex="0">◉</span></div></div>
+                </div>
+
+                <label class="terms"><input id="terms" type="checkbox"><span class="checkbox"></span><span>I agree to the <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a></span></label>
+                <div id="registerMessage" class="login-message" aria-live="polite"></div>
+                <button id="registerButton" class="register-btn" type="submit"><span id="registerButtonText"><span>♟</span> Register</span><span id="registerLoader" class="button-loader hidden" aria-label="Creating account"></span></button>
+                <div class="login-link"><span>Already have an account? <a href="login.html">Login</a></span></div>
+            </form>
+        </section>
+
+        <section class="trust-bar">
+            <div class="trust-item"><div class="trust-icon">◇</div><div><h4>Secure Platform</h4><p>Your data is safe with us</p></div></div>
+            <div class="trust-item"><div class="trust-icon">♧</div><div><h4>10K+ Companies</h4><p>Trust us to find the best talent</p></div></div>
+            <div class="trust-item"><div class="trust-icon">▣</div><div><h4>50K+ Jobs</h4><p>Opportunities for every career</p></div></div>
+            <div class="trust-item"><div class="trust-icon">♕</div><div><h4>Top Rated</h4><p>Loved by recruiters and job seekers</p></div></div>
+        </section>
+    </main>
+    <script src="../../js/register.js"></script>
+</body>
+</html>
