@@ -1,6 +1,6 @@
 ﻿using SmartRecruitmentPlatform.Backend.DTOs.Employer.ContactRequest;
 
-namespace SmartRecruitmentPlatform.Backend.Services.Interfaces
+namespace SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces
 {
     public interface IContactRequestService
     {
