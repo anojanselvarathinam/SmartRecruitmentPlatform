@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartRecruitmentPlatform.Backend.DTOs.Employer.Applicant;
-using SmartRecruitmentPlatform.Backend.Services.Interfaces;
+using SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces;
 
 namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
 {

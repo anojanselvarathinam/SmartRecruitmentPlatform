@@ -1,0 +1,356 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TalentSync | Login</title>
+
+    <link rel="stylesheet" href="../../css/auth.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <main class="auth-page">
+
+        <!-- =========================================
+             LEFT BRANDING SECTION
+        ========================================== -->
+        <section class="brand-section">
+
+            <div class="brand-content">
+
+                <!-- Logo -->
+                <div class="brand-logo">
+                    <div class="logo-mark">
+                        <span>♙</span>
+                    </div>
+
+                    <div>
+                        <h1>Talent<span>Sync</span></h1>
+                        <p>Smart Recruitment Platform</p>
+                    </div>
+                </div>
+
+
+                <!-- Hero -->
+                <div class="hero-content">
+
+                    <h2>
+                        Smart Hiring.<br>
+                        Better <span>Future.</span>
+                    </h2>
+
+                    <div class="gold-line"></div>
+
+                    <p class="hero-description">
+                        Smart recruitment platform to connect
+                        the right talent with the right opportunities.
+                    </p>
+
+                </div>
+
+
+                <!-- Features -->
+                <div class="feature-grid">
+
+                    <div class="feature-card">
+                        <div class="feature-icon">👥</div>
+
+                        <h3>Find Top Talent</h3>
+
+                        <p>
+                            Discover skilled
+                            candidates faster
+                        </p>
+                    </div>
+
+
+                    <div class="feature-card">
+                        <div class="feature-icon">◎</div>
+
+                        <h3>Smart Matching</h3>
+
+                        <p>
+                            Match the right
+                            people to the right jobs
+                        </p>
+                    </div>
+
+
+                    <div class="feature-card">
+                        <div class="feature-icon">▥</div>
+
+                        <h3>Data Insights</h3>
+
+                        <p>
+                            Make data-driven
+                            recruitment decisions
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- City / meeting visual -->
+            <div class="city-overlay"></div>
+
+            <div class="people-scene">
+                <span>●</span>
+                <span>●</span>
+                <span>●</span>
+                <span>●</span>
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             GOLD CURVE
+        ========================================== -->
+        <div class="gold-curve"></div>
+
+
+        <!-- =========================================
+             RIGHT LOGIN SECTION
+        ========================================== -->
+        <section class="login-section">
+
+            <div class="office-overlay"></div>
+
+
+            <!-- Login Card -->
+            <div class="login-card">
+
+                <!-- Header -->
+                <div class="login-header">
+
+                    <div class="login-icon">
+                        ♙
+                    </div>
+
+                    <div>
+                        <h2>Welcome Back! 👋</h2>
+                        <p>Login to your account</p>
+                    </div>
+
+                </div>
+
+
+                <!-- Error / Success -->
+                <div id="loginMessage" class="login-message"></div>
+
+
+                <!-- Login Form -->
+                <form id="loginForm">
+
+                    <!-- Email -->
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email / Username
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">♙</span>
+
+                            <input type="text"
+                                   id="email"
+                                   name="email"
+                                   placeholder="Enter your email or username"
+                                   autocomplete="username"
+                                   required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Password -->
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">🔒</span>
+
+                            <input type="password"
+                                   id="password"
+                                   name="password"
+                                   placeholder="Enter your password"
+                                   autocomplete="current-password"
+                                   required>
+
+                            <button type="button"
+                                    class="password-toggle"
+                                    id="togglePassword"
+                                    aria-label="Show password">
+                                ◉
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Remember / Forgot -->
+                    <div class="login-options">
+
+                        <label class="remember">
+
+                            <input type="checkbox"
+                                   id="rememberMe">
+
+                            <span>Remember me</span>
+
+                        </label>
+
+
+                        <a href="#" class="forgot-link">
+                            Forgot password?
+                        </a>
+
+                    </div>
+
+
+                    <!-- Login Button -->
+                    <button type="submit"
+                            class="login-button"
+                            id="loginButton">
+
+                        <span id="loginButtonText">
+                            ⇥ &nbsp; Login
+                        </span>
+
+                        <span id="loginLoader"
+                              class="loader hidden">
+                        </span>
+
+                    </button>
+
+                </form>
+
+
+                <!-- Divider -->
+                <div class="divider">
+
+                    <span></span>
+
+                    <p>or continue with</p>
+
+                    <span></span>
+
+                </div>
+
+
+                <!-- Social Login -->
+                <div class="social-login">
+
+                    <button type="button"
+                            class="social-button google-button">
+
+                        <span class="google-icon">G</span>
+
+                        Google
+
+                    </button>
+
+
+                    <button type="button"
+                            class="social-button linkedin-button">
+
+                        <span class="linkedin-icon">in</span>
+
+                        LinkedIn
+
+                    </button>
+
+                </div>
+
+
+                <!-- Register -->
+                <p class="register-text">
+
+                    Don't have an account?
+
+                    <a href="register.html">
+                        Register
+                    </a>
+
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="auth-footer">
+
+        <div class="footer-item">
+
+            <span class="footer-icon">🛡</span>
+
+            <div>
+                <strong>Secure Platform</strong>
+                <small>Your data is safe with us</small>
+            </div>
+
+        </div>
+
+
+        <div class="footer-item">
+
+            <span class="footer-icon">♙</span>
+
+            <div>
+                <strong>Smart Matching</strong>
+                <small>Find the right opportunities</small>
+            </div>
+
+        </div>
+
+
+        <div class="footer-item">
+
+            <span class="footer-icon">▣</span>
+
+            <div>
+                <strong>Job Opportunities</strong>
+                <small>Connect with better careers</small>
+            </div>
+
+        </div>
+
+
+        <div class="footer-item">
+
+            <span class="footer-icon">★</span>
+
+            <div>
+                <strong>Trusted Platform</strong>
+                <small>Built for recruiters & seekers</small>
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <script src="../../js/auth.js"></script>
+
+</body>
+</html>
