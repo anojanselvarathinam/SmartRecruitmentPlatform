@@ -1,7 +1,9 @@
-﻿using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
+﻿using EmployerModel =
+    SmartRecruitmentPlatform.Backend.Models.Employer.Employer;
+
+using SmartRecruitmentPlatform.Backend.Repositories.Employer.Interfaces;
+
 using SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces;
-using EmployerModel =
-    SmartRecruitmentPlatform.Backend.Models.Employer;
 
 namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
 {

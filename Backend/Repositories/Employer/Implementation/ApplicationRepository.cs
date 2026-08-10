@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartRecruitmentPlatform.Backend.Data;
-using SmartRecruitmentPlatform.Backend.Models;
-using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
+using SmartRecruitmentPlatform.Backend.Models.Employer;
+using SmartRecruitmentPlatform.Backend.Repositories.Employer.Interfaces;
 
-namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
+namespace SmartRecruitmentPlatform.Backend.Repositories.Employer.Implementation
 {
     public class ApplicationRepository : IApplicationRepository
     {
@@ -17,38 +17,34 @@ namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
         public async Task<Application?> GetByIdAsync(int applicationId)
         {
             return await _context.Applications
-                .FirstOrDefaultAsync(
-                    a => a.ApplicationId == applicationId);
+                .FirstOrDefaultAsync(a => a.ApplicationId == applicationId);
         }
 
-        public async Task<IEnumerable<Application>> GetByJobIdAsync(
-            int jobId)
+        public async Task<IEnumerable<Application>> GetByJobIdAsync(int jobId)
         {
             return await _context.Applications
                 .Where(a => a.JobId == jobId)
+                .OrderByDescending(a => a.MatchScore)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Application>> GetByJobSeekerIdAsync(
-            int jobSeekerId)
+        public async Task<IEnumerable<Application>> GetByJobSeekerIdAsync(int jobSeekerId)
         {
             return await _context.Applications
                 .Where(a => a.JobSeekerId == jobSeekerId)
                 .ToListAsync();
         }
 
-        public async Task<Application> CreateAsync(
-            Application application)
+        public async Task<Application> CreateAsync(Application application)
         {
-            _context.Applications.Add(application);
+            await _context.Applications.AddAsync(application);
 
             await _context.SaveChangesAsync();
 
             return application;
         }
 
-        public async Task UpdateAsync(
-            Application application)
+        public async Task UpdateAsync(Application application)
         {
             _context.Applications.Update(application);
 

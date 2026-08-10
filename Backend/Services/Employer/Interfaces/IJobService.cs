@@ -9,8 +9,7 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces
         Task<IEnumerable<JobResponseDto>> GetByCompanyIdAsync(
             int companyId);
 
-        Task<JobResponseDto> CreateAsync(
-            JobCreateDto dto);
+        Task<JobResponseDto> CreateAsync(JobCreateDto dto);
 
         Task<JobResponseDto?> UpdateAsync(
             int jobId,

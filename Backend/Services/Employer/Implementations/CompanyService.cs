@@ -1,8 +1,7 @@
 ﻿using SmartRecruitmentPlatform.Backend.DTOs.Employer.Company;
-using SmartRecruitmentPlatform.Backend.Models;
-using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
+using SmartRecruitmentPlatform.Backend.Models.Employer;
+using SmartRecruitmentPlatform.Backend.Repositories.Employer.Interfaces;
 using SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces;
-using SmartRecruitmentPlatform.Backend.Services.Interfaces;
 
 namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
 {

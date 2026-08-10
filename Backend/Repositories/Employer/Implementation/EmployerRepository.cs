@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SmartRecruitmentPlatform.Backend.Data;
-using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
-using SmartRecruitmentPlatform.Backend.Models;
 
-namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
+using EmployerModel =
+    SmartRecruitmentPlatform.Backend.Models.Employer.Employer;
+
+using SmartRecruitmentPlatform.Backend.Data;
+using SmartRecruitmentPlatform.Backend.Repositories.Employer.Interfaces;
+
+namespace SmartRecruitmentPlatform.Backend.Repositories.Employer.Implementation
 {
     public class EmployerRepository : IEmployerRepository
     {
@@ -14,21 +17,23 @@ namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<Employer?> GetByIdAsync(int employerId)
+        public async Task<EmployerModel?> GetByIdAsync(int employerId)
         {
             return await _context.Employers
                 .FirstOrDefaultAsync(e => e.EmployerId == employerId);
         }
 
-        public async Task<Employer?> GetByEmailAsync(string email)
+        public async Task<EmployerModel?> GetByEmailAsync(string email)
         {
             return await _context.Employers
                 .FirstOrDefaultAsync(e => e.Email == email);
         }
 
-        public async Task<Employer> CreateAsync(Employer employer)
+        public async Task<EmployerModel> CreateAsync(
+            EmployerModel employer)
         {
             await _context.Employers.AddAsync(employer);
+
             await _context.SaveChangesAsync();
 
             return employer;
@@ -40,9 +45,11 @@ namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
                 .AnyAsync(e => e.Email == email);
         }
 
-        public async Task UpdateAsync(Employer employer)
+        public async Task UpdateAsync(
+            EmployerModel employer)
         {
             _context.Employers.Update(employer);
+
             await _context.SaveChangesAsync();
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace SmartRecruitmentPlatform.Backend.Models
+﻿namespace SmartRecruitmentPlatform.Backend.Models.Employer
 {
     public class ContactRequest
     {
@@ -14,7 +14,6 @@
 
         public DateTime? RespondedAt { get; set; }
 
-        // Navigation Properties
-        public Employer Employer { get; set; } = null!;
+        public Employer? Employer { get; set; }
     }
 }

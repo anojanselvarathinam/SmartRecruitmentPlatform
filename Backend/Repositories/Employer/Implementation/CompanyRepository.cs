@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartRecruitmentPlatform.Backend.Data;
-using SmartRecruitmentPlatform.Backend.Models;
-using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
+using SmartRecruitmentPlatform.Backend.Models.Employer;
+using SmartRecruitmentPlatform.Backend.Repositories.Employer.Interfaces;
 
-namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
+namespace SmartRecruitmentPlatform.Backend.Repositories.Employer.Implementation
 {
     public class CompanyRepository : ICompanyRepository
     {
@@ -28,7 +28,7 @@ namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
 
         public async Task<Company> CreateAsync(Company company)
         {
-            _context.Companies.Add(company);
+            await _context.Companies.AddAsync(company);
 
             await _context.SaveChangesAsync();
 

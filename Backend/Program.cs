@@ -96,12 +96,12 @@ builder.Services.AddScoped<
     CompanyService>();
 
 builder.Services.AddScoped<
-    SmartRecruitmentPlatform.Backend.Services.Interfaces.IApplicationService,
-    SmartRecruitmentPlatform.Backend.Services.Implementations.ApplicationService>();
+    SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces.IApplicationService,
+    SmartRecruitmentPlatform.Backend.Services.Employer.Implementations.ApplicationService>();
 
 builder.Services.AddScoped<
-    SmartRecruitmentPlatform.Backend.Services.Interfaces.IContactRequestService,
-    SmartRecruitmentPlatform.Backend.Services.Implementations.ContactRequestService>();
+    SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces.IContactRequestService,
+    SmartRecruitmentPlatform.Backend.Services.Employer.Implementations.ContactRequestService>();
 
 builder.Services.AddScoped<
     SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces.IJobService,
@@ -118,7 +118,9 @@ builder.Services.AddScoped<
     ICompanyRepository,
     CompanyRepository>();
 
-builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<
+    SmartRecruitmentPlatform.Backend.Services.Admin.Interfaces.IAdminService,
+    SmartRecruitmentPlatform.Backend.Services.Admin.Implementation.AdminService>();
 
 builder.Services.AddScoped<
     EmployerApplicationRepository,

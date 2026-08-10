@@ -1,6 +1,6 @@
-﻿namespace SmartRecruitmentPlatform.Backend.Repositories.JobSeeker.Implementation
+﻿namespace SmartRecruitmentPlatform.Backend.Repositories.JobSeeker.Implementation;
+
+public class JobSeekerRepository
 {
-    public class JobSeekerRepository
-    {
-    }
+
 }

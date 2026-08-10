@@ -1,4 +1,4 @@
-﻿namespace SmartRecruitmentPlatform.Backend.Models
+﻿namespace SmartRecruitmentPlatform.Backend.Models.Employer
 {
     public class Application
     {
@@ -16,8 +16,6 @@
 
         public DateTime? UpdatedAt { get; set; }
 
-        // Navigation Properties
-        public Job Job { get; set; } = null!;
-
+        public Job? Job { get; set; }
     }
 }

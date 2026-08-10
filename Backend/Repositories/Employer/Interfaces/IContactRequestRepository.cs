@@ -1,6 +1,6 @@
-﻿using SmartRecruitmentPlatform.Backend.Models;
+﻿using SmartRecruitmentPlatform.Backend.Models.Employer;
 
-namespace SmartRecruitmentPlatform.Backend.Repositories.Interfaces
+namespace SmartRecruitmentPlatform.Backend.Repositories.Employer.Interfaces
 {
     public interface IContactRequestRepository
     {

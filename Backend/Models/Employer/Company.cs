@@ -1,4 +1,4 @@
-﻿namespace SmartRecruitmentPlatform.Backend.Models
+﻿namespace SmartRecruitmentPlatform.Backend.Models.Employer
 {
     public class Company
     {
@@ -16,9 +16,8 @@
 
         public string Website { get; set; } = string.Empty;
 
-        // Navigation Properties
-        public Employer Employer { get; set; } = null!;
+        public Employer? Employer { get; set; }
 
-        public ICollection<Job> Jobs { get; set; } = new List<Job>();
+        public List<Job> Jobs { get; set; } = new List<Job>();
     }
 }

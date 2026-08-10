@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartRecruitmentPlatform.Backend.Data;
 using SmartRecruitmentPlatform.Backend.DTOs.Admin;
-//using SmartRecruitmentPlatform.Backend.Models;
+using SmartRecruitmentPlatform.Backend.Models.Employer;
 using SmartRecruitmentPlatform.Backend.Models.Authentication;
 using SmartRecruitmentPlatform.Backend.Repositories.Admin.Interfaces;
 

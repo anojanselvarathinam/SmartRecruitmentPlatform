@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartRecruitmentPlatform.Backend.Data;
-using SmartRecruitmentPlatform.Backend.Models;
-using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
+using SmartRecruitmentPlatform.Backend.Models.Employer;
+using SmartRecruitmentPlatform.Backend.Repositories.Employer.Interfaces;
 
-namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
+namespace SmartRecruitmentPlatform.Backend.Repositories.Employer.Implementation
 {
     public class ContactRequestRepository : IContactRequestRepository
     {
@@ -14,8 +14,7 @@ namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<ContactRequest?> GetByIdAsync(
-            int contactRequestId)
+        public async Task<ContactRequest?> GetByIdAsync(int contactRequestId)
         {
             return await _context.ContactRequests
                 .FirstOrDefaultAsync(c =>
@@ -39,19 +38,18 @@ namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
         }
 
         public async Task<ContactRequest> CreateAsync(
-            ContactRequest contactRequest)
+            ContactRequest request)
         {
-            _context.ContactRequests.Add(contactRequest);
+            await _context.ContactRequests.AddAsync(request);
 
             await _context.SaveChangesAsync();
 
-            return contactRequest;
+            return request;
         }
 
-        public async Task UpdateAsync(
-            ContactRequest contactRequest)
+        public async Task UpdateAsync(ContactRequest request)
         {
-            _context.ContactRequests.Update(contactRequest);
+            _context.ContactRequests.Update(request);
 
             await _context.SaveChangesAsync();
         }

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartRecruitmentPlatform.Backend.Data;
-using SmartRecruitmentPlatform.Backend.Models;
-using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
+using SmartRecruitmentPlatform.Backend.Models.Employer;
+using SmartRecruitmentPlatform.Backend.Repositories.Employer.Interfaces;
 
-namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
+namespace SmartRecruitmentPlatform.Backend.Repositories.Employer.Implementation
 {
     public class JobRepository : IJobRepository
     {
@@ -20,8 +20,7 @@ namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
                 .FirstOrDefaultAsync(j => j.JobId == jobId);
         }
 
-        public async Task<IEnumerable<Job>> GetByCompanyIdAsync(
-            int companyId)
+        public async Task<IEnumerable<Job>> GetByCompanyIdAsync(int companyId)
         {
             return await _context.Jobs
                 .Where(j => j.CompanyId == companyId)
@@ -37,7 +36,7 @@ namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
 
         public async Task<Job> CreateAsync(Job job)
         {
-            _context.Jobs.Add(job);
+            await _context.Jobs.AddAsync(job);
 
             await _context.SaveChangesAsync();
 

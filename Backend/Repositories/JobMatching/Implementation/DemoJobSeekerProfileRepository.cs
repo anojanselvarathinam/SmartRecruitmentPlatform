@@ -1,5 +1,4 @@
 ﻿using SmartRecruitmentPlatform.Backend.Models.JobMatching;
-
 namespace SmartRecruitmentPlatform.Backend.Repositories.JobMatching;
 
 public sealed class DemoJobSeekerProfileRepository : IJobSeekerProfileRepository

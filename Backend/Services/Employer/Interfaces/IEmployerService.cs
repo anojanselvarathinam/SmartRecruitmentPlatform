@@ -1,5 +1,5 @@
 ﻿using EmployerModel =
-    SmartRecruitmentPlatform.Backend.Models.Employer;
+    SmartRecruitmentPlatform.Backend.Models.Employer.Employer;
 
 namespace SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces
 {

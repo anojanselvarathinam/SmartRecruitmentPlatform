@@ -19,8 +19,7 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
         [HttpGet("{employerId}")]
         public async Task<IActionResult> GetEmployer(int employerId)
         {
-            var employer =
-                await _employerService.GetByIdAsync(employerId);
+            var employer = await _employerService.GetByIdAsync(employerId);
 
             if (employer == null)
             {

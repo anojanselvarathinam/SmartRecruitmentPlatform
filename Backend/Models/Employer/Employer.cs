@@ -1,4 +1,4 @@
-﻿namespace SmartRecruitmentPlatform.Backend.Models
+﻿namespace SmartRecruitmentPlatform.Backend.Models.Employer
 {
     public class Employer
     {

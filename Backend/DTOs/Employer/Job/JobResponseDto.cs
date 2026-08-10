@@ -12,7 +12,7 @@
 
         public string RequiredSkills { get; set; } = string.Empty;
 
-        public int RequiredExperience { get; set; }
+        public string RequiredExperience { get; set; } = string.Empty;
 
         public string Education { get; set; } = string.Empty;
 
