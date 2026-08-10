@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using SmartRecruitmentPlatform.Backend.Models.Authentication;
-using SmartRecruitmentPlatform.Backend.Models.Employer;
 
 namespace SmartRecruitmentPlatform.Backend.Data
 {
