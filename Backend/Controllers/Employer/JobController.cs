@@ -19,7 +19,10 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer;
         [HttpGet("{jobId}")]
         public async Task<IActionResult> GetJob(int jobId)
         {
-            var job = await _jobService.GetByIdAsync(jobId);
+            if (!TryGetEmployerId(out int employerId))
+                return Unauthorized("Employer ID not found in token.");
+
+            var job = await _jobService.GetByIdAsync(jobId, employerId);
 
             if (job == null)
                 return NotFound("Job not found.");
@@ -30,7 +33,12 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer;
         [HttpGet("company/{companyId}")]
         public async Task<IActionResult> GetCompanyJobs(int companyId)
         {
-            var jobs = await _jobService.GetByCompanyIdAsync(companyId);
+            if (!TryGetEmployerId(out int employerId))
+                return Unauthorized("Employer ID not found in token.");
+
+            var jobs = await _jobService.GetByCompanyIdAsync(
+                companyId,
+                employerId);
 
             return Ok(jobs);
         }
@@ -39,7 +47,19 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer;
         public async Task<IActionResult> CreateJob(
             [FromBody] JobCreateDto dto)
         {
-            var job = await _jobService.CreateAsync(dto);
+            if (!TryGetEmployerId(out int employerId))
+                return Unauthorized("Employer ID not found in token.");
+
+            JobResponseDto job;
+
+            try
+            {
+                job = await _jobService.CreateAsync(dto, employerId);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
             return Ok(job);
         }
@@ -49,12 +69,7 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer;
 int jobId,
 [FromBody] JobUpdateDto dto)
     {
-        var employerIdClaim =
-            User.FindFirst(
-                System.Security.Claims.ClaimTypes.NameIdentifier
-            )?.Value;
-
-        if (!int.TryParse(employerIdClaim, out int employerId))
+        if (!TryGetEmployerId(out int employerId))
         {
             return Unauthorized("Employer ID not found in token.");
         }
@@ -72,15 +87,9 @@ int jobId,
     }
 
     [HttpPut("{jobId}/close")]
-    [HttpPut("{jobId}/close")]
     public async Task<IActionResult> CloseJob(int jobId)
     {
-        var employerIdClaim =
-            User.FindFirst(
-                System.Security.Claims.ClaimTypes.NameIdentifier
-            )?.Value;
-
-        if (!int.TryParse(employerIdClaim, out int employerId))
+        if (!TryGetEmployerId(out int employerId))
         {
             return Unauthorized("Employer ID not found in token.");
         }
@@ -97,5 +106,11 @@ int jobId,
         {
             message = "Job vacancy closed successfully."
         });
+    }
+
+    private bool TryGetEmployerId(out int employerId)
+    {
+        var employerIdClaim = User.FindFirst("employerId")?.Value;
+        return int.TryParse(employerIdClaim, out employerId);
     }
 }

@@ -92,6 +92,35 @@ builder.Services.AddAuthentication(
                             builder.Configuration[
                                 "JwtSettings:Key"]!))
             };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async context =>
+            {
+                var userIdValue = context.Principal?
+                    .FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?
+                    .Value;
+
+                if (!int.TryParse(userIdValue, out int userId))
+                {
+                    context.Fail("Invalid user identity.");
+                    return;
+                }
+
+                var database = context.HttpContext.RequestServices
+                    .GetRequiredService<ApplicationDbContext>();
+
+                var isActive = await database.Users
+                    .AnyAsync(user =>
+                        user.UserId == userId &&
+                        user.IsActive);
+
+                if (!isActive)
+                {
+                    context.Fail("User account is inactive.");
+                }
+            }
+        };
     });
 
 
@@ -147,6 +176,10 @@ ExperienceService>();
 builder.Services.AddScoped<
 ICvService,
 CvService>();
+
+builder.Services.AddScoped<
+INotificationService,
+NotificationService>();
 
 
 // Employer Repositories
@@ -260,17 +293,17 @@ builder.Services.Configure<MatchingWeightOptions>(
 
 // Job Matching Repositories
 
-builder.Services.AddSingleton<
+builder.Services.AddScoped<
     SmartRecruitmentPlatform.Backend.Repositories.JobMatching.IJobRepository,
-    DemoJobRepository>();
+    EfJobRepository>();
 
-builder.Services.AddSingleton<
+builder.Services.AddScoped<
     IJobSeekerProfileRepository,
-    DemoJobSeekerProfileRepository>();
+    EfJobSeekerProfileRepository>();
 
-builder.Services.AddSingleton<
+builder.Services.AddScoped<
     SmartRecruitmentPlatform.Backend.Repositories.JobMatching.IApplicationRepository,
-    JsonApplicationRepository>();
+    EfApplicationRepository>();
 
 
 // Job Matching Services

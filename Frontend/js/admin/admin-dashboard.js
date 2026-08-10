@@ -1,99 +1,24 @@
-﻿/* =========================================
-   ADMIN DASHBOARD JS
-   ========================================= */
-
 document.addEventListener("DOMContentLoaded", function () {
-
-    checkAdminAuthentication();
-
-    loadDashboard();
-
+    if (checkAdminAuthentication()) loadDashboard();
 });
 
-
-/* =========================================
-   LOAD DASHBOARD
-   ========================================= */
-
 async function loadDashboard() {
-
-    /*
-        Temporary demo data.
-
-        Later this can be replaced with:
-
-        fetch("/api/admin/dashboard")
-    */
-
-    const dashboardData = {
-
-        totalUsers: 120,
-
-        totalVacancies: 35,
-
-        totalApplications: 245
-
-    };
-
-
-    document.getElementById("totalUsers")
-        .textContent =
-        dashboardData.totalUsers;
-
-
-    document.getElementById("totalVacancies")
-        .textContent =
-        dashboardData.totalVacancies;
-
-
-    document.getElementById("totalApplications")
-        .textContent =
-        dashboardData.totalApplications;
-
-}
-
-
-/*
-   FUTURE BACKEND VERSION
-
-async function loadDashboard() {
-
     try {
+        const response = await adminApiFetch("/api/admin/dashboard");
+        if (!response.ok) throw new Error("Unable to load dashboard data.");
 
-        const response = await fetch(
-            "/api/admin/dashboard",
-            {
-                headers: {
-                    "Authorization":
-                        "Bearer " + getAdminToken()
-                }
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error("Dashboard API failed");
-        }
-
-        const data =
-            await response.json();
-
-        document.getElementById("totalUsers")
-            .textContent = data.totalUsers;
-
-        document.getElementById("totalVacancies")
-            .textContent = data.totalVacancies;
-
-        document.getElementById("totalApplications")
-            .textContent =
-            data.totalApplications;
-
-    }
-    catch (error) {
-
+        const data = await response.json();
+        setDashboardValue("totalUsers", data.totalUsers);
+        setDashboardValue("totalEmployers", data.totalEmployers);
+        setDashboardValue("totalJobSeekers", data.totalJobSeekers);
+        setDashboardValue("totalVacancies", data.totalVacancies);
+        setDashboardValue("totalApplications", data.totalApplications);
+    } catch (error) {
         handleAdminApiError(error);
-
     }
-
 }
 
-*/
+function setDashboardValue(elementId, value) {
+    const element = document.getElementById(elementId);
+    if (element) element.textContent = value ?? 0;
+}

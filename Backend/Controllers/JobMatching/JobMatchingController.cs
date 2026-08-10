@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmartRecruitmentPlatform.Backend.DTOs.JobMatching;
 using SmartRecruitmentPlatform.Backend.Services.JobMatching;
 
@@ -6,42 +7,41 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.JobMatching;
 
 [ApiController]
 [Route("api/job-matching")]
+[Authorize(Roles = "JobSeeker")]
 public sealed class JobMatchingController : ControllerBase
 {
     private readonly IJobMatchingService _jobMatchingService;
     private readonly IApplicationService _applicationService;
-    private readonly IConfiguration _configuration;
 
     public JobMatchingController(
         IJobMatchingService jobMatchingService,
-        IApplicationService applicationService,
-        IConfiguration configuration)
+        IApplicationService applicationService)
     {
         _jobMatchingService = jobMatchingService;
         _applicationService = applicationService;
-        _configuration = configuration;
     }
 
     [HttpGet("health")]
+    [AllowAnonymous]
     public IActionResult Health()
     {
         return Ok(new
         {
             status = "ok",
-            module = "Member 4 - Job Matching & Applications",
+            module = "Job Matching & Applications",
             timeUtc = DateTime.UtcNow
         });
     }
 
     [HttpGet("demo-profile")]
-    public async Task<IActionResult> GetDemoProfile(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetProfile(CancellationToken cancellationToken)
     {
         var profile = await _jobMatchingService.GetDemoProfileAsync(
-            GetDemoJobSeekerId(),
+            GetJobSeekerProfileId(),
             cancellationToken);
 
         return profile is null
-            ? NotFound(new { message = "Demo profile not found." })
+            ? NotFound(new { message = "Job seeker profile not found." })
             : Ok(profile);
     }
 
@@ -59,7 +59,7 @@ public sealed class JobMatchingController : ControllerBase
         try
         {
             var result = await _jobMatchingService.SearchAsync(
-                GetDemoJobSeekerId(),
+                GetJobSeekerProfileId(),
                 filter,
                 cancellationToken);
 
@@ -79,7 +79,7 @@ public sealed class JobMatchingController : ControllerBase
         try
         {
             var result = await _jobMatchingService.GetDetailsAsync(
-                GetDemoJobSeekerId(),
+                GetJobSeekerProfileId(),
                 jobId,
                 cancellationToken);
 
@@ -99,7 +99,7 @@ public sealed class JobMatchingController : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await _applicationService.ApplyAsync(
-            GetDemoJobSeekerId(),
+            GetJobSeekerProfileId(),
             jobId,
             cancellationToken);
 
@@ -125,14 +125,22 @@ public sealed class JobMatchingController : ControllerBase
         CancellationToken cancellationToken)
     {
         var result = await _applicationService.GetMyApplicationsAsync(
-            GetDemoJobSeekerId(),
+            GetJobSeekerProfileId(),
             cancellationToken);
 
         return Ok(result);
     }
 
-    private int GetDemoJobSeekerId()
+    private int GetJobSeekerProfileId()
     {
-        return _configuration.GetValue<int?>("Member4Demo:JobSeekerId") ?? 1;
+        var profileIdClaim = User.FindFirst("jobSeekerProfileId")?.Value;
+
+        if (!int.TryParse(profileIdClaim, out int profileId))
+        {
+            throw new InvalidOperationException(
+                "Job seeker profile ID was not found in the token.");
+        }
+
+        return profileId;
     }
 }

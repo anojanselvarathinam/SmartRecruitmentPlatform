@@ -8,6 +8,10 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
+using SmartRecruitmentPlatform.Backend.Models;
+using SmartRecruitmentPlatform.Backend.Models.JobSeeker;
+using EmployerModel = SmartRecruitmentPlatform.Backend.Models.Employer;
+
 namespace SmartRecruitmentPlatform.Backend.Services.Implementations
 {
     public class AuthService : IAuthService
@@ -28,8 +32,7 @@ namespace SmartRecruitmentPlatform.Backend.Services.Implementations
         {
             // Check whether role is valid
             if (registerDto.Role != "JobSeeker" &&
-                registerDto.Role != "Employer" &&
-                registerDto.Role != "Admin")
+                registerDto.Role != "Employer")
             {
                 return false;
             }
@@ -52,12 +55,47 @@ namespace SmartRecruitmentPlatform.Backend.Services.Implementations
                 FullName = registerDto.FullName,
                 Email = registerDto.Email,
                 PasswordHash = passwordHash,
-                Role = registerDto.Role
+                Role = registerDto.Role,
+                IsActive = true
             };
 
-            // Save user
-            await _authRepository.AddUserAsync(user);
-            await _authRepository.SaveChangesAsync();
+            EmployerModel? employer = null;
+            JobSeekerProfile? jobSeekerProfile = null;
+
+            if (registerDto.Role == "Employer")
+            {
+                employer = new EmployerModel
+                {
+                    FullName = registerDto.FullName,
+                    Email = registerDto.Email,
+                    PasswordHash = passwordHash,
+                    CreatedAt = DateTime.UtcNow
+                };
+            }
+
+            if (registerDto.Role == "JobSeeker")
+            {
+                var nameParts = registerDto.FullName.Trim().Split(
+                    ' ',
+                    2,
+                    StringSplitOptions.RemoveEmptyEntries);
+
+                jobSeekerProfile = new JobSeekerProfile
+                {
+                    FirstName = nameParts.Length > 0
+                        ? nameParts[0]
+                        : registerDto.FullName,
+                    LastName = nameParts.Length > 1
+                        ? nameParts[1]
+                        : string.Empty,
+                    CreatedAt = DateTime.UtcNow
+                };
+            }
+
+            await _authRepository.RegisterUserAsync(
+                user,
+                employer,
+                jobSeekerProfile);
 
             return true;
         }
@@ -68,6 +106,11 @@ namespace SmartRecruitmentPlatform.Backend.Services.Implementations
             var user = await _authRepository.GetUserByEmailAsync(loginDto.Email);
 
             if (user == null)
+            {
+                return null;
+            }
+
+            if (!user.IsActive)
             {
                 return null;
             }
@@ -92,8 +135,23 @@ namespace SmartRecruitmentPlatform.Backend.Services.Implementations
             var claims = new List<Claim>();
 
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()));
+            claims.Add(new Claim(ClaimTypes.Name, user.FullName));
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
             claims.Add(new Claim(ClaimTypes.Role, user.Role));
+
+            if (user.Employer != null)
+            {
+                claims.Add(new Claim(
+                    "employerId",
+                    user.Employer.EmployerId.ToString()));
+            }
+
+            if (user.JobSeekerProfile != null)
+            {
+                claims.Add(new Claim(
+                    "jobSeekerProfileId",
+                    user.JobSeekerProfile.Id.ToString()));
+            }
 
             // Create security key
             var securityKey = new SymmetricSecurityKey(

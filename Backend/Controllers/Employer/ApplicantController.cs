@@ -21,8 +21,13 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
         [HttpGet("job/{jobId}")]
         public async Task<IActionResult> GetApplicants(int jobId)
         {
+            if (!TryGetEmployerId(out int employerId))
+                return Unauthorized("Employer ID not found in token.");
+
             var applicants =
-                await _applicationService.GetApplicantsByJobIdAsync(jobId);
+                await _applicationService.GetApplicantsByJobIdAsync(
+                    jobId,
+                    employerId);
 
             return Ok(applicants);
         }
@@ -31,9 +36,13 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
         public async Task<IActionResult> GetApplicantDetails(
             int applicationId)
         {
+            if (!TryGetEmployerId(out int employerId))
+                return Unauthorized("Employer ID not found in token.");
+
             var applicant =
                 await _applicationService.GetApplicantDetailsAsync(
-                    applicationId);
+                    applicationId,
+                    employerId);
 
             if (applicant == null)
             {
@@ -48,9 +57,13 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
             int applicationId,
             [FromBody] UpdateApplicationStatusDto dto)
         {
+            if (!TryGetEmployerId(out int employerId))
+                return Unauthorized("Employer ID not found in token.");
+
             var result =
                 await _applicationService.UpdateStatusAsync(
                     applicationId,
+                    employerId,
                     dto);
 
             if (!result)
@@ -62,6 +75,12 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
             {
                 message = "Application status updated successfully."
             });
+        }
+
+        private bool TryGetEmployerId(out int employerId)
+        {
+            var employerIdClaim = User.FindFirst("employerId")?.Value;
+            return int.TryParse(employerIdClaim, out employerId);
         }
     }
 }

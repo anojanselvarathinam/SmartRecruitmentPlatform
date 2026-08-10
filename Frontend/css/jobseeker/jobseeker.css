@@ -1,0 +1,20 @@
+@import url("../employer/employer.css");
+
+.match-score { font-size: 26px; font-weight: 800; color: #7C51E3; }
+.score-bar { height: 9px; background: #D6D4E0; border-radius: 999px; overflow: hidden; margin-top: 8px; }
+.score-bar span { display: block; height: 100%; background: #7C51E3; }
+.skill-list { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.skill-chip { background: rgba(110,6,84,.11); color: #6E0654; padding: 6px 10px; border-radius: 999px; font-size: 13px; }
+.skill-chip.missing { background: rgba(249,153,9,.17); color: #815000; }
+.profile-section { margin-bottom: 20px; }
+.profile-section:last-child { margin-bottom: 0; }
+.item-list { display: grid; gap: 10px; margin-top: 13px; }
+.list-item { background: white; border: 1px solid #D6D4E0; border-radius: 9px; padding: 13px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.list-item p { color: #6E637F; margin-top: 4px; font-size: 13px; }
+.job-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+.job-card h2 { font-size: 18px; margin-bottom: 6px; }
+.job-card p { color: #6E637F; margin-bottom: 10px; }
+.job-meta { display: flex; flex-wrap: wrap; gap: 12px; color: #6E637F; font-size: 13px; margin: 12px 0; }
+.split-layout { display: grid; grid-template-columns: minmax(0,2fr) minmax(280px,1fr); gap: 18px; }
+.notification-unread { border-left: 4px solid #7C51E3; }
+@media (max-width: 850px) { .job-grid, .split-layout { grid-template-columns: 1fr; } }

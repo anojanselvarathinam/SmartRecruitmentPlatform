@@ -3,6 +3,9 @@ using SmartRecruitmentPlatform.Backend.Data;
 using SmartRecruitmentPlatform.Backend.Models.Authentication;
 using SmartRecruitmentPlatform.Backend.Repositories.Interfaces;
 
+using SmartRecruitmentPlatform.Backend.Models;
+using SmartRecruitmentPlatform.Backend.Models.JobSeeker;
+
 namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
 {
     public class AuthRepository : IAuthRepository
@@ -17,17 +20,44 @@ namespace SmartRecruitmentPlatform.Backend.Repositories.Implementations
         public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _context.Users
+                .Include(user => user.Employer)
+                .Include(user => user.JobSeekerProfile)
                 .FirstOrDefaultAsync(x => x.Email == email);
         }
 
-        public async Task AddUserAsync(User user)
+        public async Task RegisterUserAsync(
+            User user,
+            Employer? employer,
+            JobSeekerProfile? jobSeekerProfile)
         {
-            await _context.Users.AddAsync(user);
-        }
+            await using var transaction =
+                await _context.Database.BeginTransactionAsync();
 
-        public async Task SaveChangesAsync()
-        {
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.Users.AddAsync(user);
+                await _context.SaveChangesAsync();
+
+                if (employer != null)
+                {
+                    employer.UserId = user.UserId;
+                    await _context.Employers.AddAsync(employer);
+                }
+
+                if (jobSeekerProfile != null)
+                {
+                    jobSeekerProfile.UserId = user.UserId;
+                    await _context.JobSeekerProfiles.AddAsync(jobSeekerProfile);
+                }
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
     }
 }

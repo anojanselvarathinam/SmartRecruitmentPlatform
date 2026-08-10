@@ -392,9 +392,17 @@ public class JobSeekerController : ControllerBase
         int jobId,
         [FromServices] SmartRecruitmentPlatform.Backend.Services.JobMatching.IJobMatchingService jobMatchingService)
     {
-        var userId = GetUserId();
+        var profileIdClaim = User.FindFirst("jobSeekerProfileId")?.Value;
 
-        var details = await jobMatchingService.GetDetailsAsync(userId, jobId);
+        if (!int.TryParse(profileIdClaim, out int profileId))
+        {
+            return Unauthorized(new
+            {
+                message = "Job seeker profile ID not found in token."
+            });
+        }
+
+        var details = await jobMatchingService.GetDetailsAsync(profileId, jobId);
 
         if (details == null)
         {

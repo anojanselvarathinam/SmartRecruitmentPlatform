@@ -9,9 +9,17 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces
      SendContactRequestDto dto);
 
         Task<ContactRequestResponseDto?>
-            GetByIdAsync(int contactRequestId);
+            GetByIdAsync(int contactRequestId, int employerId);
 
         Task<IEnumerable<ContactRequestResponseDto>>
             GetByEmployerIdAsync(int employerId);
+
+        Task<IEnumerable<ContactRequestResponseDto>>
+            GetByJobSeekerIdAsync(int jobSeekerProfileId);
+
+        Task<ContactRequestResponseDto?> UpdateStatusAsync(
+            int contactRequestId,
+            int jobSeekerProfileId,
+            UpdateContactStatusDto dto);
     }
 }

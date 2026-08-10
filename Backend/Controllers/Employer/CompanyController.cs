@@ -20,7 +20,12 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
         [HttpGet("{companyId}")]
         public async Task<IActionResult> GetCompany(int companyId)
         {
-            var company = await _companyService.GetByIdAsync(companyId);
+            if (!TryGetEmployerId(out int employerId))
+                return Unauthorized("Employer ID not found in token.");
+
+            var company = await _companyService.GetByIdAsync(
+                companyId,
+                employerId);
 
             if (company == null)
             {
@@ -33,6 +38,12 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
         [HttpGet("employer/{employerId}")]
         public async Task<IActionResult> GetByEmployerId(int employerId)
         {
+            if (!TryGetEmployerId(out int authenticatedEmployerId) ||
+                authenticatedEmployerId != employerId)
+            {
+                return Forbid();
+            }
+
             var company =
                 await _companyService.GetByEmployerIdAsync(employerId);
 
@@ -48,12 +59,7 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
         public async Task<IActionResult> CreateCompany(
     [FromBody] CompanyCreateDto dto)
         {
-            var employerIdClaim =
-                User.FindFirst(
-                    System.Security.Claims.ClaimTypes.NameIdentifier
-                )?.Value;
-
-            if (!int.TryParse(employerIdClaim, out int employerId))
+            if (!TryGetEmployerId(out int employerId))
             {
                 return Unauthorized("Employer ID not found in token.");
             }
@@ -71,9 +77,13 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
             int companyId,
             [FromBody] CompanyUpdateDto dto)
         {
+            if (!TryGetEmployerId(out int employerId))
+                return Unauthorized("Employer ID not found in token.");
+
             var company =
                 await _companyService.UpdateAsync(
                     companyId,
+                    employerId,
                     dto);
 
             if (company == null)
@@ -82,6 +92,12 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
             }
 
             return Ok(company);
+        }
+
+        private bool TryGetEmployerId(out int employerId)
+        {
+            var employerIdClaim = User.FindFirst("employerId")?.Value;
+            return int.TryParse(employerIdClaim, out employerId);
         }
     }
 }

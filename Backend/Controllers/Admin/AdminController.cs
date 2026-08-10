@@ -7,7 +7,7 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Admin;
 
 [ApiController]
 [Route("api/admin")]
-[Authorize(Roles = "Administrator")]
+[Authorize(Roles = "Admin")]
 public class AdminController : ControllerBase
 {
     private readonly IAdminService _adminService;
