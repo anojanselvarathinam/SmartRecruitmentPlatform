@@ -44,10 +44,12 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
         }
 
         public async Task<CompanyResponseDto> CreateAsync(
-            CompanyCreateDto dto)
+    int employerId,
+    CompanyCreateDto dto)
         {
             var company = new Company
             {
+                EmployerId = employerId,
                 CompanyName = dto.CompanyName,
                 Description = dto.Description,
                 Location = dto.Location,

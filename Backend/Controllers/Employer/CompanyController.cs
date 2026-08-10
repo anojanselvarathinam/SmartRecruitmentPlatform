@@ -46,10 +46,22 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
 
         [HttpPost]
         public async Task<IActionResult> CreateCompany(
-            [FromBody] CompanyCreateDto dto)
+    [FromBody] CompanyCreateDto dto)
         {
+            var employerIdClaim =
+                User.FindFirst(
+                    System.Security.Claims.ClaimTypes.NameIdentifier
+                )?.Value;
+
+            if (!int.TryParse(employerIdClaim, out int employerId))
+            {
+                return Unauthorized("Employer ID not found in token.");
+            }
+
             var company =
-                await _companyService.CreateAsync(dto);
+                await _companyService.CreateAsync(
+                    employerId,
+                    dto);
 
             return Ok(company);
         }

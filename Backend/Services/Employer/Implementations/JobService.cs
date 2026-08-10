@@ -8,10 +8,14 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
     public class JobService : IJobService
     {
         private readonly IJobRepository _jobRepository;
+        private readonly ICompanyRepository _companyRepository;
 
-        public JobService(IJobRepository jobRepository)
+        public JobService(
+            IJobRepository jobRepository,
+            ICompanyRepository companyRepository)
         {
             _jobRepository = jobRepository;
+            _companyRepository = companyRepository;
         }
 
         public async Task<JobResponseDto?> GetByIdAsync(int jobId)
@@ -55,9 +59,15 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
         }
 
         public async Task<JobResponseDto?> UpdateAsync(
-            int jobId,
-            JobUpdateDto dto)
+    int jobId,
+    int employerId,
+    JobUpdateDto dto)
         {
+            if (!await IsJobOwnedByEmployerAsync(jobId, employerId))
+            {
+                return null;
+            }
+
             var job = await _jobRepository.GetByIdAsync(jobId);
 
             if (job == null)
@@ -79,8 +89,15 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
             return MapToResponse(job);
         }
 
-        public async Task<bool> CloseJobAsync(int jobId)
+        public async Task<bool> CloseJobAsync(
+    int jobId,
+    int employerId)
         {
+            if (!await IsJobOwnedByEmployerAsync(jobId, employerId))
+            {
+                return false;
+            }
+
             var job = await _jobRepository.GetByIdAsync(jobId);
 
             if (job == null)

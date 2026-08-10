@@ -17,10 +17,12 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
         }
 
         public async Task<ContactRequestResponseDto> SendAsync(
-            SendContactRequestDto dto)
+    int employerId,
+    SendContactRequestDto dto)
         {
             var request = new ContactRequest
             {
+                EmployerId = employerId,
                 JobSeekerId = dto.JobSeekerId,
                 Status = "Pending",
                 CreatedAt = DateTime.UtcNow
