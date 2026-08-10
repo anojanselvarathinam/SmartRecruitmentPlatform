@@ -1,0 +1,183 @@
+﻿/* =========================================
+   USER MANAGEMENT
+   ========================================= */
+
+.user-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+
+/* =========================================
+   SEARCH
+   ========================================= */
+
+.search-box {
+    flex: 1;
+}
+
+    .search-box input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #d1d5db;
+        border-radius: 7px;
+        outline: none;
+        font-size: 14px;
+    }
+
+        .search-box input:focus {
+            border-color: #2563eb;
+        }
+
+
+/* =========================================
+   FILTER
+   ========================================= */
+
+.filter-box select {
+    padding: 12px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    background: white;
+    min-width: 160px;
+    outline: none;
+}
+
+
+/* =========================================
+   TABLE
+   ========================================= */
+
+.user-table-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+    .user-table th {
+        background: #f9fafb;
+        padding: 15px;
+        text-align: left;
+        font-size: 13px;
+        color: #4b5563;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .user-table td {
+        padding: 15px;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 14px;
+    }
+
+    .user-table tbody tr:hover {
+        background: #f9fafb;
+    }
+
+
+/* =========================================
+   ROLE
+   ========================================= */
+
+.role-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.role-jobseeker {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.role-employer {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+
+/* =========================================
+   STATUS
+   ========================================= */
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-active {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-blocked {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+
+/* =========================================
+   ACTION
+   ========================================= */
+
+.view-user-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+    .view-user-btn:hover {
+        background: #1d4ed8;
+    }
+
+
+/* =========================================
+   NO USERS
+   ========================================= */
+
+.no-users {
+    display: none;
+    padding: 30px;
+    text-align: center;
+    color: #6b7280;
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .user-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-box select {
+        width: 100%;
+    }
+}
+
+''
