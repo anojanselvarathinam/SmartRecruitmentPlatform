@@ -35,5 +35,15 @@ namespace SmartRecruitmentPlatform.Backend.Data
         public DbSet<Experience> Experiences { get; set; }
 
         public DbSet<CvDocument> CvDocuments { get; set; }
+
+        public DbSet<Notification> Notifications { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(
+                typeof(ApplicationDbContext).Assembly);
+        }
     }
 }

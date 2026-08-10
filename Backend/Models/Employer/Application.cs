@@ -19,5 +19,6 @@
         // Navigation Properties
         public Job Job { get; set; } = null!;
 
+        public JobSeeker.JobSeekerProfile JobSeeker { get; set; } = null!;
     }
 }

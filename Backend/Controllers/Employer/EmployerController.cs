@@ -19,6 +19,18 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
         [HttpGet("{employerId}")]
         public async Task<IActionResult> GetEmployer(int employerId)
         {
+            var employerIdClaim = User.FindFirst("employerId")?.Value;
+
+            if (!int.TryParse(employerIdClaim, out int authenticatedEmployerId))
+            {
+                return Unauthorized("Employer ID not found in token.");
+            }
+
+            if (authenticatedEmployerId != employerId)
+            {
+                return Forbid();
+            }
+
             var employer =
                 await _employerService.GetByIdAsync(employerId);
 
@@ -27,7 +39,14 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
                 return NotFound("Employer not found.");
             }
 
-            return Ok(employer);
+            return Ok(new
+            {
+                employer.EmployerId,
+                employer.UserId,
+                employer.FullName,
+                employer.Email,
+                employer.CreatedAt
+            });
         }
     }
 }

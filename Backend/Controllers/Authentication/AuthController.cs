@@ -19,6 +19,16 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Authentication
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
+            // Only JobSeeker and Employer can register normally
+            if (registerDto.Role != "JobSeeker" &&
+                registerDto.Role != "Employer")
+            {
+                return BadRequest(new
+                {
+                    message = "Only JobSeeker and Employer can register."
+                });
+            }
+
             var result = await _authService.RegisterAsync(registerDto);
 
             if (!result)

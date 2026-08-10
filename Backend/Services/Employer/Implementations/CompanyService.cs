@@ -16,12 +16,13 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
         }
 
         public async Task<CompanyResponseDto?> GetByIdAsync(
-            int companyId)
+            int companyId,
+            int employerId)
         {
             var company =
                 await _companyRepository.GetByIdAsync(companyId);
 
-            if (company == null)
+            if (company == null || company.EmployerId != employerId)
             {
                 return null;
             }
@@ -65,12 +66,13 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
 
         public async Task<CompanyResponseDto?> UpdateAsync(
             int companyId,
+            int employerId,
             CompanyUpdateDto dto)
         {
             var company =
                 await _companyRepository.GetByIdAsync(companyId);
 
-            if (company == null)
+            if (company == null || company.EmployerId != employerId)
             {
                 return null;
             }

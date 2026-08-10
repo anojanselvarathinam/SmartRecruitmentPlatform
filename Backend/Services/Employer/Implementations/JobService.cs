@@ -18,8 +18,15 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
             _companyRepository = companyRepository;
         }
 
-        public async Task<JobResponseDto?> GetByIdAsync(int jobId)
+        public async Task<JobResponseDto?> GetByIdAsync(
+            int jobId,
+            int employerId)
         {
+            if (!await IsJobOwnedByEmployerAsync(jobId, employerId))
+            {
+                return null;
+            }
+
             var job = await _jobRepository.GetByIdAsync(jobId);
 
             if (job == null)
@@ -31,15 +38,33 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
         }
 
         public async Task<IEnumerable<JobResponseDto>> GetByCompanyIdAsync(
-            int companyId)
+            int companyId,
+            int employerId)
         {
+            var company = await _companyRepository.GetByIdAsync(companyId);
+
+            if (company == null || company.EmployerId != employerId)
+            {
+                return new List<JobResponseDto>();
+            }
+
             var jobs = await _jobRepository.GetByCompanyIdAsync(companyId);
 
             return jobs.Select(MapToResponse);
         }
 
-        public async Task<JobResponseDto> CreateAsync(JobCreateDto dto)
+        public async Task<JobResponseDto> CreateAsync(
+            JobCreateDto dto,
+            int employerId)
         {
+            var company = await _companyRepository.GetByIdAsync(dto.CompanyId);
+
+            if (company == null || company.EmployerId != employerId)
+            {
+                throw new InvalidOperationException(
+                    "Company not found or access denied.");
+            }
+
             var job = new Job
             {
                 CompanyId = dto.CompanyId,
@@ -111,6 +136,28 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
             await _jobRepository.UpdateAsync(job);
 
             return true;
+        }
+
+        private async Task<bool> IsJobOwnedByEmployerAsync(
+            int jobId,
+            int employerId)
+        {
+            var job = await _jobRepository.GetByIdAsync(jobId);
+
+            if (job == null)
+            {
+                return false;
+            }
+
+            var company = await _companyRepository.GetByIdAsync(
+                job.CompanyId);
+
+            if (company == null)
+            {
+                return false;
+            }
+
+            return company.EmployerId == employerId;
         }
 
         private static JobResponseDto MapToResponse(Job job)

@@ -19,20 +19,12 @@ public class AdminRepository : IAdminRepository
     public async Task<DashboardDto> GetDashboardAsync()
     {
         var totalUsers = await _context.Users.CountAsync();
-
-        // var totalEmployers = await _context.Employers.CountAsync();
-
-        // var totalJobSeekers = await _context.JobSeekers.CountAsync();
-
-        // var totalVacancies = await _context.Jobs.CountAsync();
-
-        // var totalApplications = await _context.Applications.CountAsync();
-
-
-        var totalEmployers = 0;
-        var totalJobSeekers = 0;
-        var totalVacancies = 0;
-        var totalApplications = 0;
+        var totalEmployers = await _context.Users
+            .CountAsync(user => user.Role == "Employer");
+        var totalJobSeekers = await _context.Users
+            .CountAsync(user => user.Role == "JobSeeker");
+        var totalVacancies = await _context.Jobs.CountAsync();
+        var totalApplications = await _context.Applications.CountAsync();
 
         return new DashboardDto
         {

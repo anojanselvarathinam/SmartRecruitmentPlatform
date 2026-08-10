@@ -20,6 +20,8 @@ public class JobSeekerProfile
 
     public DateTime? UpdatedAt { get; set; }
 
+    public SmartRecruitmentPlatform.Backend.Models.Authentication.User User { get; set; } = null!;
+
     public ICollection<JobSeekerSkill> Skills { get; set; }
         = new List<JobSeekerSkill>();
 
@@ -31,4 +33,13 @@ public class JobSeekerProfile
 
     public ICollection<CvDocument> CvDocuments { get; set; }
         = new List<CvDocument>();
+
+    public ICollection<SmartRecruitmentPlatform.Backend.Models.Application> Applications { get; set; }
+        = new List<SmartRecruitmentPlatform.Backend.Models.Application>();
+
+    public ICollection<SmartRecruitmentPlatform.Backend.Models.ContactRequest> ContactRequests { get; set; }
+        = new List<SmartRecruitmentPlatform.Backend.Models.ContactRequest>();
+
+    public ICollection<Notification> Notifications { get; set; }
+        = new List<Notification>();
 }

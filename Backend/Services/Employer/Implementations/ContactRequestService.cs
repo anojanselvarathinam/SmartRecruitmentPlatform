@@ -35,13 +35,14 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
         }
 
         public async Task<ContactRequestResponseDto?> GetByIdAsync(
-            int contactRequestId)
+            int contactRequestId,
+            int employerId)
         {
             var request =
                 await _contactRequestRepository.GetByIdAsync(
                     contactRequestId);
 
-            if (request == null)
+            if (request == null || request.EmployerId != employerId)
             {
                 return null;
             }
@@ -57,6 +58,42 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Implementations
                     employerId);
 
             return requests.Select(MapToResponse);
+        }
+
+        public async Task<IEnumerable<ContactRequestResponseDto>>
+            GetByJobSeekerIdAsync(int jobSeekerProfileId)
+        {
+            var requests = await _contactRequestRepository
+                .GetByJobSeekerIdAsync(jobSeekerProfileId);
+
+            return requests.Select(MapToResponse);
+        }
+
+        public async Task<ContactRequestResponseDto?> UpdateStatusAsync(
+            int contactRequestId,
+            int jobSeekerProfileId,
+            UpdateContactStatusDto dto)
+        {
+            var request = await _contactRequestRepository.GetByIdAsync(
+                contactRequestId);
+
+            if (request == null ||
+                request.JobSeekerId != jobSeekerProfileId ||
+                request.Status != "Pending")
+            {
+                return null;
+            }
+
+            if (dto.Status != "Accepted" && dto.Status != "Declined")
+            {
+                return null;
+            }
+
+            request.Status = dto.Status;
+            request.RespondedAt = DateTime.UtcNow;
+
+            await _contactRequestRepository.UpdateAsync(request);
+            return MapToResponse(request);
         }
 
         private static ContactRequestResponseDto MapToResponse(

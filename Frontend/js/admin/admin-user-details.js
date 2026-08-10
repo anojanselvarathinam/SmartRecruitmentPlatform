@@ -1,233 +1,80 @@
-﻿/* =========================================
-   USER DETAILS JS
-   ========================================= */
-
 let currentUser = null;
 
-
 document.addEventListener("DOMContentLoaded", function () {
-
-    checkAdminAuthentication();
-
+    if (!checkAdminAuthentication()) return;
     loadUserDetails();
-
     setupAccountButtons();
-
 });
 
+async function loadUserDetails() {
+    const userId = Number(new URLSearchParams(window.location.search).get("id"));
 
-/* =========================================
-   LOAD USER
-   ========================================= */
-
-function loadUserDetails() {
-
-    const urlParams =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const userId =
-        parseInt(
-            urlParams.get("id")
-        );
-
-
-    const users = [
-
-        {
-            id: 1,
-            name: "John Silva",
-            email: "john@example.com",
-            role: "Job Seeker",
-            status: "Active"
-        },
-
-        {
-            id: 2,
-            name: "ABC Technologies",
-            email: "hr@abc.com",
-            role: "Employer",
-            status: "Active"
-        },
-
-        {
-            id: 3,
-            name: "Kamal Perera",
-            email: "kamal@example.com",
-            role: "Job Seeker",
-            status: "Blocked"
-        },
-
-        {
-            id: 4,
-            name: "XYZ Solutions",
-            email: "hr@xyz.com",
-            role: "Employer",
-            status: "Active"
-        }
-
-    ];
-
-
-    currentUser =
-        users.find(
-            user => user.id === userId
-        );
-
-
-    if (!currentUser) {
-
-        showAdminAlert(
-            "User not found.",
-            "error"
-        );
-
+    if (!Number.isInteger(userId) || userId <= 0) {
+        showAdminAlert("Invalid user ID.", "error");
         return;
     }
 
+    try {
+        const response = await adminApiFetch(`/api/admin/users/${userId}`);
+        if (response.status === 404) throw new Error("User not found.");
+        if (!response.ok) throw new Error("Unable to load user details.");
 
-    displayUserDetails();
-
+        currentUser = await response.json();
+        displayUserDetails();
+    } catch (error) {
+        handleAdminApiError(error);
+    }
 }
-
-
-/* =========================================
-   DISPLAY USER
-   ========================================= */
 
 function displayUserDetails() {
+    const status = currentUser.isActive ? "Active" : "Blocked";
+    const role = currentUser.role === "JobSeeker" ? "Job Seeker" : currentUser.role;
 
-    document.getElementById("userName")
-        .textContent =
-        currentUser.name;
-
-
-    document.getElementById("userEmail")
-        .textContent =
-        currentUser.email;
-
-
-    document.getElementById("detailName")
-        .textContent =
-        currentUser.name;
-
-
-    document.getElementById("detailEmail")
-        .textContent =
-        currentUser.email;
-
-
-    document.getElementById("detailRole")
-        .textContent =
-        currentUser.role;
-
-
-    document.getElementById("detailStatus")
-        .textContent =
-        currentUser.status;
-
-
-    document.getElementById("userAvatar")
-        .textContent =
-        currentUser.name
-            .charAt(0)
-            .toUpperCase();
-
+    document.getElementById("userName").textContent = currentUser.name;
+    document.getElementById("userEmail").textContent = currentUser.email;
+    document.getElementById("detailName").textContent = currentUser.name;
+    document.getElementById("detailEmail").textContent = currentUser.email;
+    document.getElementById("detailRole").textContent = role;
+    document.getElementById("detailStatus").textContent = status;
+    document.getElementById("userAvatar").textContent = currentUser.name.charAt(0).toUpperCase();
+    document.getElementById("activateButton").disabled = currentUser.isActive;
+    document.getElementById("blockButton").disabled = !currentUser.isActive;
 }
-
-
-/* =========================================
-   BUTTONS
-   ========================================= */
 
 function setupAccountButtons() {
+    document.getElementById("activateButton").addEventListener("click", function () {
+        updateAccountStatus(true);
+    });
 
-    document.getElementById(
-        "activateButton"
-    ).addEventListener(
-        "click",
-        activateAccount
-    );
-
-
-    document.getElementById(
-        "blockButton"
-    ).addEventListener(
-        "click",
-        blockAccount
-    );
-
+    document.getElementById("blockButton").addEventListener("click", function () {
+        if (confirm("Are you sure you want to block this account?")) {
+            updateAccountStatus(false);
+        }
+    });
 }
 
+async function updateAccountStatus(isActive) {
+    if (!currentUser) return;
 
-/* =========================================
-   ACTIVATE
-   ========================================= */
+    try {
+        const response = await adminApiFetch(`/api/admin/users/${currentUser.id}/status`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ isActive: isActive })
+        });
 
-function activateAccount() {
+        if (!response.ok) throw new Error("Unable to update account status.");
 
-    if (!currentUser) {
-        return;
+        currentUser.isActive = isActive;
+        displayUserDetails();
+        showAdminAlert(isActive
+            ? "User account activated successfully."
+            : "User account blocked successfully.", "success");
+    } catch (error) {
+        handleAdminApiError(error);
     }
-
-
-    currentUser.status = "Active";
-
-    displayUserDetails();
-
-
-    showAdminAlert(
-        "User account activated successfully.",
-        "success"
-    );
-
 }
-
-
-/* =========================================
-   BLOCK
-   ========================================= */
-
-function blockAccount() {
-
-    if (!currentUser) {
-        return;
-    }
-
-
-    const confirmed =
-        confirm(
-            "Are you sure you want to block this account?"
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    currentUser.status = "Blocked";
-
-    displayUserDetails();
-
-
-    showAdminAlert(
-        "User account blocked successfully.",
-        "success"
-    );
-
-}
-
-
-/* =========================================
-   BACK
-   ========================================= */
 
 function goBackToUsers() {
-
-    window.location.href =
-        "users.html";
-
+    window.location.href = "users.html";
 }

@@ -5,7 +5,8 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces
     public interface ICompanyService
     {
         Task<CompanyResponseDto?> GetByIdAsync(
-            int companyId);
+            int companyId,
+            int employerId);
 
         Task<CompanyResponseDto?> GetByEmployerIdAsync(
             int employerId);
@@ -16,6 +17,7 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces
 
         Task<CompanyResponseDto?> UpdateAsync(
             int companyId,
+            int employerId,
             CompanyUpdateDto dto);
     }
 }
