@@ -1,0 +1,267 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Settings</title>
+
+    <link rel="stylesheet"
+          href="../../css/admin/admin-common.css">
+
+    <link rel="stylesheet"
+          href="../../css/admin/admin-settings.css">
+
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="admin-sidebar">
+
+            <div class="admin-logo">
+
+                <h2>
+                    Smart<span>Recruitment</span>
+                </h2>
+
+            </div>
+
+
+            <ul class="admin-menu">
+
+                <li>
+                    <a href="dashboard.html">
+                        <span class="menu-icon">▣</span>
+                        Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="users.html">
+                        <span class="menu-icon">👥</span>
+                        Users
+                    </a>
+                </li>
+
+                <li>
+                    <a href="settings.html">
+                        <span class="menu-icon">⚙</span>
+                        Settings
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" id="adminLogout">
+                        <span class="menu-icon">↪</span>
+                        Logout
+                    </a>
+                </li>
+
+            </ul>
+
+        </aside>
+
+
+        <!-- MAIN -->
+
+        <main class="admin-main">
+
+
+            <!-- TOPBAR -->
+
+            <header class="admin-topbar">
+
+                <div>
+
+                    <button class="mobile-menu-btn"
+                            id="mobileMenuButton">
+
+                        ☰
+
+                    </button>
+
+                    <span class="topbar-title">
+                        Application Settings
+                    </span>
+
+                </div>
+
+
+                <div class="admin-profile">
+
+                    <div class="admin-avatar">
+                        A
+                    </div>
+
+                    <div class="admin-profile-info">
+
+                        <span class="admin-profile-name">
+                            Administrator
+                        </span>
+
+                        <span class="admin-profile-role">
+                            Admin
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- CONTENT -->
+
+            <section class="admin-content">
+
+
+                <div class="page-heading">
+
+                    <h1>Application Settings</h1>
+
+                    <p>
+                        Manage basic application settings.
+                    </p>
+
+                </div>
+
+
+                <!-- SETTINGS -->
+
+                <div class="settings-card admin-card">
+
+
+                    <!-- USER REGISTRATION -->
+
+                    <div class="setting-row">
+
+                        <div class="setting-information">
+
+                            <h3>
+                                User Registration
+                            </h3>
+
+                            <p>
+                                Allow new users to register
+                                on the platform.
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input type="checkbox"
+                                   id="registrationToggle">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- JOB POSTING -->
+
+                    <div class="setting-row">
+
+                        <div class="setting-information">
+
+                            <h3>
+                                Job Posting
+                            </h3>
+
+                            <p>
+                                Allow employers to create
+                                job vacancies.
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input type="checkbox"
+                                   id="jobPostingToggle">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- SYSTEM STATUS -->
+
+                    <div class="setting-row">
+
+                        <div class="setting-information">
+
+                            <h3>
+                                System Status
+                            </h3>
+
+                            <p>
+                                Enable or disable the
+                                application.
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input type="checkbox"
+                                   id="systemStatusToggle">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- SAVE -->
+
+                    <div class="settings-footer">
+
+                        <button class="btn btn-primary"
+                                id="saveSettingsButton">
+
+                            Save Changes
+
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <div id="adminAlert"
+         class="admin-alert">
+    </div>
+
+
+    <script src="../../js/admin/admin-common.js"></script>
+
+    <script src="../../js/admin/admin-settings.js"></script>
+
+</body>
+
+</html>

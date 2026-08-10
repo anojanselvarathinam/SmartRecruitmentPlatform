@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>User Management</title>
+
+    <link rel="stylesheet"
+          href="../../css/admin/admin-common.css">
+
+    <link rel="stylesheet"
+          href="../../css/admin/admin-users.css">
+
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="admin-sidebar">
+
+            <div class="admin-logo">
+
+                <h2>
+                    Smart<span>Recruitment</span>
+                </h2>
+
+            </div>
+
+            <ul class="admin-menu">
+
+                <li>
+                    <a href="dashboard.html">
+                        <span class="menu-icon">▣</span>
+                        Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="users.html">
+                        <span class="menu-icon">👥</span>
+                        Users
+                    </a>
+                </li>
+
+                <li>
+                    <a href="settings.html">
+                        <span class="menu-icon">⚙</span>
+                        Settings
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" id="adminLogout">
+                        <span class="menu-icon">↪</span>
+                        Logout
+                    </a>
+                </li>
+
+            </ul>
+
+        </aside>
+
+
+        <!-- MAIN -->
+
+        <main class="admin-main">
+
+
+            <!-- TOPBAR -->
+
+            <header class="admin-topbar">
+
+                <div>
+
+                    <button class="mobile-menu-btn"
+                            id="mobileMenuButton">
+
+                        ☰
+
+                    </button>
+
+                    <span class="topbar-title">
+                        User Management
+                    </span>
+
+                </div>
+
+
+                <div class="admin-profile">
+
+                    <div class="admin-avatar">
+                        A
+                    </div>
+
+                    <div class="admin-profile-info">
+
+                        <span class="admin-profile-name">
+                            Administrator
+                        </span>
+
+                        <span class="admin-profile-role">
+                            Admin
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- CONTENT -->
+
+            <section class="admin-content">
+
+
+                <div class="page-heading">
+
+                    <h1>User Management</h1>
+
+                    <p>
+                        View and manage registered users.
+                    </p>
+
+                </div>
+
+
+                <!-- SEARCH / FILTER -->
+
+                <div class="user-toolbar admin-card">
+
+                    <div class="search-box">
+
+                        <input type="text"
+                               id="userSearch"
+                               placeholder="Search by name or email...">
+
+                    </div>
+
+
+                    <div class="filter-box">
+
+                        <select id="roleFilter">
+
+                            <option value="all">
+                                All Roles
+                            </option>
+
+                            <option value="Job Seeker">
+                                Job Seeker
+                            </option>
+
+                            <option value="Employer">
+                                Employer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- USER TABLE -->
+
+                <div class="user-table-card admin-card">
+
+                    <div class="table-responsive">
+
+                        <table class="user-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Name</th>
+
+                                    <th>Email</th>
+
+                                    <th>Role</th>
+
+                                    <th>Status</th>
+
+                                    <th>Action</th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="usersTableBody">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <div id="noUsersMessage"
+                         class="no-users">
+
+                        No users found.
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <div id="adminAlert"
+         class="admin-alert">
+    </div>
+
+
+    <script src="../../js/admin/admin-common.js"></script>
+
+    <script src="../../js/admin/admin-users.js"></script>
+
+</body>
+
+</html>

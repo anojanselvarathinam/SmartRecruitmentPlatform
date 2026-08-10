@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SmartRecruitmentPlatform.Backend.Models;
 using SmartRecruitmentPlatform.Backend.Models.Authentication;
+using SmartRecruitmentPlatform.Backend.Models.JobSeeker;
 
 namespace SmartRecruitmentPlatform.Backend.Data
 {
@@ -23,5 +24,16 @@ namespace SmartRecruitmentPlatform.Backend.Data
         public DbSet<Application> Applications { get; set; }
 
         public DbSet<ContactRequest> ContactRequests { get; set; }
+        // Job Seeker
+
+        public DbSet<JobSeekerProfile> JobSeekerProfiles { get; set; }
+
+        public DbSet<JobSeekerSkill> JobSeekerSkills { get; set; }
+
+        public DbSet<Education> Educations { get; set; }
+
+        public DbSet<Experience> Experiences { get; set; }
+
+        public DbSet<CvDocument> CvDocuments { get; set; }
     }
 }
