@@ -20,10 +20,20 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer
 
         [HttpPost]
         public async Task<IActionResult> SendContactRequest(
-            [FromBody] SendContactRequestDto dto)
+    [FromBody] SendContactRequestDto dto)
         {
+            var employerIdClaim =
+                User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(employerIdClaim, out int employerId))
+            {
+                return Unauthorized("Employer ID not found in token.");
+            }
+
             var request =
-                await _contactRequestService.SendAsync(dto);
+                await _contactRequestService.SendAsync(
+                    employerId,
+                    dto);
 
             return Ok(request);
         }

@@ -11,7 +11,8 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces
             int employerId);
 
         Task<CompanyResponseDto> CreateAsync(
-            CompanyCreateDto dto);
+    int employerId,
+    CompanyCreateDto dto);
 
         Task<CompanyResponseDto?> UpdateAsync(
             int companyId,

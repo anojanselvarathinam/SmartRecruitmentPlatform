@@ -44,30 +44,58 @@ namespace SmartRecruitmentPlatform.Backend.Controllers.Employer;
             return Ok(job);
         }
 
-        [HttpPut("{jobId}")]
-        public async Task<IActionResult> UpdateJob(
-            int jobId,
-            [FromBody] JobUpdateDto dto)
+    [HttpPut("{jobId}")]
+    public async Task<IActionResult> UpdateJob(
+int jobId,
+[FromBody] JobUpdateDto dto)
+    {
+        var employerIdClaim =
+            User.FindFirst(
+                System.Security.Claims.ClaimTypes.NameIdentifier
+            )?.Value;
+
+        if (!int.TryParse(employerIdClaim, out int employerId))
         {
-            var job = await _jobService.UpdateAsync(jobId, dto);
-
-            if (job == null)
-                return NotFound("Job not found.");
-
-            return Ok(job);
+            return Unauthorized("Employer ID not found in token.");
         }
 
-        [HttpPut("{jobId}/close")]
-        public async Task<IActionResult> CloseJob(int jobId)
-        {
-            var result = await _jobService.CloseJobAsync(jobId);
+        var job =
+            await _jobService.UpdateAsync(
+                jobId,
+                employerId,
+                dto);
 
-            if (!result)
-                return NotFound("Job not found.");
+        if (job == null)
+            return NotFound("Job not found or access denied.");
 
-            return Ok(new
-            {
-                message = "Job vacancy closed successfully."
-            });
-        }
+        return Ok(job);
     }
+
+    [HttpPut("{jobId}/close")]
+    [HttpPut("{jobId}/close")]
+    public async Task<IActionResult> CloseJob(int jobId)
+    {
+        var employerIdClaim =
+            User.FindFirst(
+                System.Security.Claims.ClaimTypes.NameIdentifier
+            )?.Value;
+
+        if (!int.TryParse(employerIdClaim, out int employerId))
+        {
+            return Unauthorized("Employer ID not found in token.");
+        }
+
+        var result =
+            await _jobService.CloseJobAsync(
+                jobId,
+                employerId);
+
+        if (!result)
+            return NotFound("Job not found or access denied.");
+
+        return Ok(new
+        {
+            message = "Job vacancy closed successfully."
+        });
+    }
+}

@@ -13,9 +13,12 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces
             JobCreateDto dto);
 
         Task<JobResponseDto?> UpdateAsync(
-            int jobId,
-            JobUpdateDto dto);
+    int jobId,
+    int employerId,
+    JobUpdateDto dto);
 
-        Task<bool> CloseJobAsync(int jobId);
+        Task<bool> CloseJobAsync(
+    int jobId,
+    int employerId);
     }
 }

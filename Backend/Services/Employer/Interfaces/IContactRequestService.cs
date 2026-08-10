@@ -5,7 +5,8 @@ namespace SmartRecruitmentPlatform.Backend.Services.Employer.Interfaces
     public interface IContactRequestService
     {
         Task<ContactRequestResponseDto> SendAsync(
-            SendContactRequestDto dto);
+     int employerId,
+     SendContactRequestDto dto);
 
         Task<ContactRequestResponseDto?>
             GetByIdAsync(int contactRequestId);
