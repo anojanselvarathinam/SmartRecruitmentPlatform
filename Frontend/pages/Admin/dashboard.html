@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet"
+          href="../../css/admin/admin-common.css">
+
+    <link rel="stylesheet"
+          href="../../css/admin/admin-dashboard.css">
+
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+        <!-- =========================
+             SIDEBAR
+             ========================= -->
+
+        <aside class="admin-sidebar">
+
+            <div class="admin-logo">
+
+                <h2>
+                    Smart<span>Recruitment</span>
+                </h2>
+
+            </div>
+
+            <ul class="admin-menu">
+
+                <li>
+                    <a href="dashboard.html">
+
+                        <span class="menu-icon">▣</span>
+
+                        Dashboard
+
+                    </a>
+                </li>
+
+                <li>
+                    <a href="users.html">
+
+                        <span class="menu-icon">👥</span>
+
+                        Users
+
+                    </a>
+                </li>
+
+                <li>
+                    <a href="settings.html">
+
+                        <span class="menu-icon">⚙</span>
+
+                        Settings
+
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" id="adminLogout">
+
+                        <span class="menu-icon">↪</span>
+
+                        Logout
+
+                    </a>
+                </li>
+
+            </ul>
+
+        </aside>
+
+
+        <!-- =========================
+             MAIN
+             ========================= -->
+
+        <main class="admin-main">
+
+            <!-- TOPBAR -->
+
+            <header class="admin-topbar">
+
+                <div>
+
+                    <button class="mobile-menu-btn"
+                            id="mobileMenuButton">
+
+                        ☰
+
+                    </button>
+
+                    <span class="topbar-title">
+                        Admin Dashboard
+                    </span>
+
+                </div>
+
+
+                <div class="admin-profile">
+
+                    <div class="admin-avatar">
+                        A
+                    </div>
+
+                    <div class="admin-profile-info">
+
+                        <span class="admin-profile-name">
+                            Administrator
+                        </span>
+
+                        <span class="admin-profile-role">
+                            Admin
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- CONTENT -->
+
+            <section class="admin-content">
+
+                <div class="page-heading">
+
+                    <h1>Dashboard</h1>
+
+                    <p>
+                        Overview of the recruitment platform.
+                    </p>
+
+                </div>
+
+
+                <!-- STATISTICS -->
+
+                <div class="stats-grid">
+
+
+                    <!-- USERS -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon users-icon">
+                            👥
+                        </div>
+
+                        <div class="stat-info">
+
+                            <p>Total Users</p>
+
+                            <h2 id="totalUsers">
+                                0
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- VACANCIES -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon vacancies-icon">
+                            💼
+                        </div>
+
+                        <div class="stat-info">
+
+                            <p>Total Vacancies</p>
+
+                            <h2 id="totalVacancies">
+                                0
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- APPLICATIONS -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon applications-icon">
+                            📄
+                        </div>
+
+                        <div class="stat-info">
+
+                            <p>Total Applications</p>
+
+                            <h2 id="totalApplications">
+                                0
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OVERVIEW -->
+
+                <div class="dashboard-overview admin-card">
+
+                    <h2>
+                        System Overview
+                    </h2>
+
+                    <p>
+                        The administrator can monitor basic
+                        platform usage through these statistics.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- ALERT -->
+
+    <div id="adminAlert"
+         class="admin-alert">
+    </div>
+
+
+    <script src="../../js/admin/admin-common.js"></script>
+
+    <script src="../../js/admin/admin-dashboard.js"></script>
+
+</body>
+
+</html>

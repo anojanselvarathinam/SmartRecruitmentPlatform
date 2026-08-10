@@ -1,0 +1,298 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>User Details</title>
+
+    <link rel="stylesheet"
+          href="../../css/admin/admin-common.css">
+
+    <link rel="stylesheet"
+          href="../../css/admin/admin-user-details.css">
+
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="admin-sidebar">
+
+            <div class="admin-logo">
+
+                <h2>
+                    Smart<span>Recruitment</span>
+                </h2>
+
+            </div>
+
+            <ul class="admin-menu">
+
+                <li>
+                    <a href="dashboard.html">
+                        <span class="menu-icon">▣</span>
+                        Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="users.html">
+                        <span class="menu-icon">👥</span>
+                        Users
+                    </a>
+                </li>
+
+                <li>
+                    <a href="settings.html">
+                        <span class="menu-icon">⚙</span>
+                        Settings
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" id="adminLogout">
+                        <span class="menu-icon">↪</span>
+                        Logout
+                    </a>
+                </li>
+
+            </ul>
+
+        </aside>
+
+
+        <!-- MAIN -->
+
+        <main class="admin-main">
+
+
+            <header class="admin-topbar">
+
+                <div>
+
+                    <button class="mobile-menu-btn"
+                            id="mobileMenuButton">
+
+                        ☰
+
+                    </button>
+
+                    <span class="topbar-title">
+                        User Details
+                    </span>
+
+                </div>
+
+
+                <div class="admin-profile">
+
+                    <div class="admin-avatar">
+                        A
+                    </div>
+
+                    <div class="admin-profile-info">
+
+                        <span class="admin-profile-name">
+                            Administrator
+                        </span>
+
+                        <span class="admin-profile-role">
+                            Admin
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- CONTENT -->
+
+            <section class="admin-content">
+
+
+                <div class="page-heading">
+
+                    <h1>User Details</h1>
+
+                    <p>
+                        View and manage user account information.
+                    </p>
+
+                </div>
+
+
+                <!-- USER CARD -->
+
+                <div class="user-details-card admin-card">
+
+
+                    <div class="user-profile-header">
+
+                        <div class="large-avatar"
+                             id="userAvatar">
+
+                            U
+
+                        </div>
+
+                        <div>
+
+                            <h2 id="userName">
+                                User Name
+                            </h2>
+
+                            <p id="userEmail">
+                                user@example.com
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DETAILS -->
+
+                    <div class="details-grid">
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Name
+                            </span>
+
+                            <span class="detail-value"
+                                  id="detailName">
+
+                                -
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Email
+                            </span>
+
+                            <span class="detail-value"
+                                  id="detailEmail">
+
+                                -
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Role
+                            </span>
+
+                            <span class="detail-value"
+                                  id="detailRole">
+
+                                -
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Account Status
+                            </span>
+
+                            <span class="detail-value"
+                                  id="detailStatus">
+
+                                -
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- ACCOUNT MANAGEMENT -->
+
+                    <div class="account-management">
+
+                        <h3>
+                            Account Management
+                        </h3>
+
+                        <p>
+                            Manage the selected user's account status.
+                        </p>
+
+
+                        <div class="management-actions">
+
+                            <button class="btn btn-success"
+                                    id="activateButton">
+
+                                Activate Account
+
+                            </button>
+
+
+                            <button class="btn btn-danger"
+                                    id="blockButton">
+
+                                Block Account
+
+                            </button>
+
+
+                            <button class="btn btn-secondary"
+                                    onclick="goBackToUsers()">
+
+                                Back to Users
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <div id="adminAlert"
+         class="admin-alert">
+    </div>
+
+
+    <script src="../../js/admin/admin-common.js"></script>
+
+    <script src="../../js/admin/admin-user-details.js"></script>
+
+</body>
+
+</html>
