@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Applicants</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/employer/employer.css">
+</head>
+<body>
+<div class="portal">
+    <aside class="sidebar"><div class="brand">Smart<span>Recruitment</span></div><ul class="nav"><li><a href="dashboard.html">▣ Dashboard</a></li><li><a href="company.html">🏢 Company Profile</a></li><li><a href="jobs.html">💼 Vacancies</a></li></ul></aside>
+    <main class="main">
+        <header class="topbar"><button class="menu-button" id="menuButton">☰</button><h2>Employer Portal</h2><span class="employer-name">Applicants</span></header>
+        <section class="content">
+            <div id="pageNotice" class="notice"></div>
+            <div class="page-header"><div><h1>Applicants</h1><p id="jobName">Select a vacancy to view its ranked applicants.</p></div><a class="button button-secondary" href="jobs.html">Back to Vacancies</a></div>
+            <div class="card applicant-filter-card"><div class="field"><label for="vacancySelect">Vacancy</label><select id="vacancySelect"><option value="">Loading vacancies...</option></select></div></div>
+            <div id="applicantsContainer" class="applicant-list"><div class="card loading">Loading applicants...</div></div>
+            <aside id="applicantDetailsPanel" class="card applicant-details-panel" hidden>
+                <div class="section-heading"><h2 class="section-title">Applicant Details</h2><button id="closeApplicantDetails" class="button button-secondary button-small" type="button">Close</button></div>
+                <div id="applicantDetailsContent"></div>
+            </aside>
+        </section>
+    </main>
+</div>
+<script src="../../js/employer/employer-common.js"></script>
+<script src="../../js/employer/employer-applicants.js"></script>
+</body>
+</html>

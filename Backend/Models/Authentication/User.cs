@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using SmartRecruitmentPlatform.Backend.Models.JobSeeker;
+
 namespace SmartRecruitmentPlatform.Backend.Models.Authentication
 {
     public class User
@@ -21,5 +23,10 @@ namespace SmartRecruitmentPlatform.Backend.Models.Authentication
 
         [Required]
         public string Role { get; set; } = string.Empty;
+        public bool IsActive { get; internal set; }
+
+        public SmartRecruitmentPlatform.Backend.Models.Employer? Employer { get; set; }
+
+        public JobSeekerProfile? JobSeekerProfile { get; set; }
     }
 }

@@ -1,6 +1,74 @@
-﻿namespace SmartRecruitmentPlatform.Backend.Repositories.Admin.Implementation
+﻿using Microsoft.EntityFrameworkCore;
+using SmartRecruitmentPlatform.Backend.Data;
+using SmartRecruitmentPlatform.Backend.DTOs.Admin;
+//using SmartRecruitmentPlatform.Backend.Models;
+using SmartRecruitmentPlatform.Backend.Models.Authentication;
+using SmartRecruitmentPlatform.Backend.Repositories.Admin.Interfaces;
+
+namespace SmartRecruitmentPlatform.Backend.Repositories.Admin.Implementation;
+
+public class AdminRepository : IAdminRepository
 {
-    public class AdminRepository
+    private readonly ApplicationDbContext _context;
+
+    public AdminRepository(ApplicationDbContext context)
     {
+        _context = context;
+    }
+
+    public async Task<DashboardDto> GetDashboardAsync()
+    {
+        var totalUsers = await _context.Users.CountAsync();
+        var totalEmployers = await _context.Users
+            .CountAsync(user => user.Role == "Employer");
+        var totalJobSeekers = await _context.Users
+            .CountAsync(user => user.Role == "JobSeeker");
+        var totalVacancies = await _context.Jobs.CountAsync();
+        var totalApplications = await _context.Applications.CountAsync();
+
+        return new DashboardDto
+        {
+            TotalUsers = totalUsers,
+            TotalEmployers = totalEmployers,
+            TotalJobSeekers = totalJobSeekers,
+            TotalVacancies = totalVacancies,
+            TotalApplications = totalApplications
+        };
+    }
+
+    public async Task<List<User>> GetUsersAsync()
+    {
+        return await _context.Users
+            .AsNoTracking()
+            .Where(user => user.Role == "Employer" || user.Role == "JobSeeker")
+            .ToListAsync();
+    }
+
+    public async Task<User?> GetUserByIdAsync(int id)
+    {
+        return await _context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(user => user.UserId == id &&
+                (user.Role == "Employer" || user.Role == "JobSeeker"));
+    }
+
+    public async Task<bool> UpdateUserStatusAsync(
+        int id,
+        bool isActive)
+    {
+        var user = await _context.Users
+            .FirstOrDefaultAsync(user => user.UserId == id &&
+                (user.Role == "Employer" || user.Role == "JobSeeker"));
+
+        if (user == null)
+        {
+            return false;
+        }
+
+        user.IsActive = isActive;
+
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 }

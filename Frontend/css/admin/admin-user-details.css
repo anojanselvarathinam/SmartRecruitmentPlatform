@@ -1,0 +1,128 @@
+﻿/* =========================================
+   USER DETAILS
+   ========================================= */
+
+.user-details-card {
+    max-width: 900px;
+    margin: 0 auto;
+    border-left: 4px solid #7C51E3;
+}
+.user-details-card.user-role-employer { border-left-color: #F99909; }
+.user-details-card.user-role-jobseeker { border-left-color: #7C51E3; }
+
+
+/* =========================================
+   PROFILE HEADER
+   ========================================= */
+
+.user-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 25px;
+}
+
+.large-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6E0654, #7C51E3);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+}
+.user-role-employer .large-avatar { color: #26052C; background: linear-gradient(135deg, #F9A009, #F99909); }
+.user-role-jobseeker .large-avatar { color: #fff; background: linear-gradient(135deg, #6E0654, #7C51E3); }
+
+.user-profile-header h2 {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.user-profile-header p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   DETAILS GRID
+   ========================================= */
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 15px;
+    background: #F6F4F8;
+    border: 1px solid #D6D4E0;
+    border-radius: 11px;
+}
+
+.detail-label {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.detail-value {
+    color: #111827;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   ACCOUNT MANAGEMENT
+   ========================================= */
+
+.account-management {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 25px;
+}
+
+    .account-management h3 {
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+
+    .account-management p {
+        color: #6b7280;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+.management-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .user-profile-header {
+        align-items: flex-start;
+    }
+}

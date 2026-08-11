@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Profile</title>
+    <link rel="stylesheet" href="../../css/admin/admin-common.css">
+    <link rel="stylesheet" href="../../css/admin/admin-profile.css">
+</head>
+<body>
+<div class="admin-layout">
+    <aside class="admin-sidebar">
+        <div class="admin-logo"><h2>Smart<span>Recruitment</span></h2></div>
+        <ul class="admin-menu">
+            <li><a href="dashboard.html"><span class="menu-icon">▣</span>Dashboard</a></li>
+            <li><a href="users.html"><span class="menu-icon">👥</span>Users</a></li>
+            <li><a href="settings.html"><span class="menu-icon">⚙</span>Settings</a></li>
+        </ul>
+    </aside>
+    <main class="admin-main">
+        <header class="admin-topbar">
+            <div><button class="mobile-menu-btn" id="mobileMenuButton">☰</button><span class="topbar-title">Admin Profile</span></div>
+            <div class="admin-profile"><div class="admin-avatar">A</div><div class="admin-profile-info"><span class="admin-profile-name">Administrator</span><span class="admin-profile-role">Admin</span></div></div>
+        </header>
+        <section class="admin-content">
+            <div class="page-heading"><h1>My Profile</h1><p>View the account information stored in your authenticated Admin session.</p></div>
+            <article class="admin-card admin-own-profile">
+                <div class="admin-own-profile-header"><div id="adminProfileAvatar" class="admin-own-profile-avatar">A</div><div><h2 id="adminProfileName">Administrator</h2><span class="admin-role-badge">Admin</span></div></div>
+                <div class="admin-account-section"><h3>Account Information</h3><div class="admin-account-grid"><div><span>Full Name</span><strong id="adminAccountName">Administrator</strong></div><div><span>Email</span><strong id="adminAccountEmail">—</strong></div><div><span>Role</span><strong id="adminAccountRole">Admin</strong></div></div></div>
+                <p class="admin-profile-note">Profile editing and password changes are not available because the current backend does not provide those account-management endpoints.</p>
+            </article>
+        </section>
+    </main>
+</div>
+<div id="adminAlert" class="admin-alert"></div>
+<script src="../../js/admin/admin-common.js"></script>
+<script src="../../js/admin/admin-profile.js"></script>
+</body>
+</html>

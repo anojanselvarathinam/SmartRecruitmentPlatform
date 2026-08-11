@@ -1,0 +1,45 @@
+@import url("../employer/employer.css");
+@import url("../confirmation-modal.css");
+
+.match-score { font-size: 26px; font-weight: 800; color: #7C51E3; }
+.score-bar { height: 9px; background: #D6D4E0; border-radius: 999px; overflow: hidden; margin-top: 8px; }
+.score-bar span { display: block; height: 100%; background: #7C51E3; }
+.skill-list { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.skill-chip { background: rgba(110,6,84,.11); color: #6E0654; padding: 6px 10px; border-radius: 999px; font-size: 13px; }
+.skill-chip.missing { background: rgba(249,153,9,.17); color: #815000; }
+.profile-section { margin-bottom: 20px; }
+.profile-section:last-child { margin-bottom: 0; }
+.item-list { display: grid; gap: 10px; margin-top: 13px; }
+.list-item { background: white; border: 1px solid #D6D4E0; border-radius: 9px; padding: 13px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.list-item p { color: #6E637F; margin-top: 4px; font-size: 13px; }
+.job-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+.job-card h2 { font-size: 18px; margin-bottom: 6px; }
+.job-card p { color: #6E637F; margin-bottom: 10px; }
+.job-meta { display: flex; flex-wrap: wrap; gap: 12px; color: #6E637F; font-size: 13px; margin: 12px 0; }
+.split-layout { display: grid; grid-template-columns: minmax(0,2fr) minmax(280px,1fr); gap: 18px; }
+.notification-unread { border-left: 4px solid #7C51E3; }
+@media (max-width: 850px) { .job-grid, .split-layout { grid-template-columns: 1fr; } }
+
+body { background: linear-gradient(135deg, #FBF9FB 0%, #F7F2FA 100%); }
+.content { animation: pageFade .24s ease both; }
+.job-card { border-left: 4px solid #7C51E3; animation: cardRise .25s ease both; }
+.job-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(110,6,84,.12); }
+.skill-chip { transition: transform .18s ease, background .18s ease; }
+.skill-chip:hover { transform: translateY(-1px); background: rgba(110,6,84,.16); }
+.notification-unread { background: rgba(124,81,227,.045); animation: cardRise .22s ease both; }
+.profile-hero { padding: 24px; border: 1px solid rgba(214,212,224,.8); border-left: 4px solid #6E0654; background: rgba(255,255,255,.72); backdrop-filter: blur(10px); }
+.section-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
+.section-heading .section-title { margin:0; }
+.summary-chips { display:flex; flex-wrap:wrap; gap:8px; }
+.cv-card { border-left:4px solid #8C27C5; }
+.skill-manager-card { border-left:4px solid #7C51E3; }
+.match-summary { border-left:4px solid #7C51E3; background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(240,237,244,.76)); }
+.split-layout > aside.card { border-left:4px solid #7C51E3; background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(240,237,244,.72)); }
+#applicationsContainer { border-left:4px solid #31B552; }
+#contactRequests { min-height:110px; }
+#notifications { min-height:110px; }
+.split-layout > .card:first-child { border-left:4px solid #8C27C5; }
+.split-layout > .card:last-child { border-left:4px solid #7C51E3; }
+@keyframes pageFade { from { opacity:0; } to { opacity:1; } }
+@keyframes cardRise { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+@media (prefers-reduced-motion:reduce) { .content,.job-card,.notification-unread { animation:none; } * { scroll-behavior:auto !important; } }
