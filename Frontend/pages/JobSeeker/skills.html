@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Skills</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/jobseeker/jobseeker.css">
+</head>
+<body>
+<div class="portal">
+    <aside class="sidebar"><div class="brand">Smart<span>Recruitment</span></div><ul class="nav"><li><a href="dashboard.html">▣ Dashboard</a></li><li><a href="profile.html">👤 My Profile</a></li><li><a href="jobs.html">⌕ Find Jobs</a></li><li><a href="applications.html">📄 Applications</a></li><li><a href="engagement.html">🔔 Requests & Notifications</a></li></ul></aside>
+    <main class="main">
+        <header class="topbar"><button id="menuButton" class="menu-button">☰</button><h2>Job Seeker Portal</h2><span class="employer-name">Skills</span></header>
+        <section class="content">
+            <div id="pageNotice" class="notice"></div>
+            <div class="page-header"><div><h1>Manage Skills</h1><p>Keep your saved skills accurate for better job matching.</p></div><a class="button button-secondary" href="profile.html">Back to Profile</a></div>
+            <form id="skillForm" class="card grid form-grid skill-manager-card">
+                <div class="field"><label for="skillName">Skill *</label><input id="skillName" required maxlength="100" placeholder="Example: C#"></div>
+                <div class="field"><label for="skillLevel">Skill level</label><select id="skillLevel"><option value="">Not specified</option><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></div>
+                <div class="field full"><div class="actions"><button id="skillSubmit" class="button button-primary" type="submit">Add Skill</button><button id="cancelSkillEdit" class="button button-secondary" type="button" hidden>Cancel Edit</button></div></div>
+            </form>
+            <div class="card profile-section" style="margin-top:18px"><div class="section-heading"><h2 class="section-title">Your Skills</h2><span id="skillTotal" class="badge badge-shortlisted">0 skills</span></div><div id="skillsList" class="item-list"><div class="loading">Loading skills...</div></div></div>
+        </section>
+    </main>
+</div>
+<script src="../../js/confirmation-modal.js"></script><script src="../../js/jobseeker/jobseeker-common.js"></script><script src="../../js/jobseeker/jobseeker-skills.js"></script>
+</body>
+</html>

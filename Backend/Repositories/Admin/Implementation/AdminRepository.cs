@@ -40,6 +40,7 @@ public class AdminRepository : IAdminRepository
     {
         return await _context.Users
             .AsNoTracking()
+            .Where(user => user.Role == "Employer" || user.Role == "JobSeeker")
             .ToListAsync();
     }
 
@@ -47,7 +48,8 @@ public class AdminRepository : IAdminRepository
     {
         return await _context.Users
             .AsNoTracking()
-            .FirstOrDefaultAsync(user => user.UserId == id);
+            .FirstOrDefaultAsync(user => user.UserId == id &&
+                (user.Role == "Employer" || user.Role == "JobSeeker"));
     }
 
     public async Task<bool> UpdateUserStatusAsync(
@@ -55,7 +57,8 @@ public class AdminRepository : IAdminRepository
         bool isActive)
     {
         var user = await _context.Users
-            .FirstOrDefaultAsync(user => user.UserId == id);
+            .FirstOrDefaultAsync(user => user.UserId == id &&
+                (user.Role == "Employer" || user.Role == "JobSeeker"));
 
         if (user == null)
         {

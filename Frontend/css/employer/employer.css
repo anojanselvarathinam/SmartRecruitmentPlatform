@@ -1,3 +1,5 @@
+@import url("../confirmation-modal.css");
+
 :root {
     --sidebar: #26052C;
     --sidebar-secondary: #320B3A;
@@ -65,9 +67,10 @@ th, td { padding: 13px 12px; text-align: left; border-bottom: 1px solid var(--bo
 th { color: var(--muted); font-size: 13px; }
 .badge { display: inline-block; border-radius: 999px; padding: 5px 10px; font-size: 12px; font-weight: 700; }
 .badge-active, .badge-accepted { background: rgba(23,167,59,.14); color: var(--success); }
-.badge-closed, .badge-rejected { background: rgba(166,27,56,.12); color: #8d1830; }
+.badge-closed, .badge-rejected, .badge-declined { background: rgba(166,27,56,.12); color: #8d1830; }
 .badge-pending, .badge-applied { background: rgba(249,153,9,.16); color: #8b5603; }
 .badge-shortlisted { background: rgba(124,81,227,.16); color: var(--active); }
+.badge-reviewed { background: rgba(21,120,253,.13); color: #0f5fca; }
 .empty, .loading { padding: 35px 15px; text-align: center; color: var(--muted); }
 .notice { display: none; padding: 12px 14px; border-radius: 8px; margin-bottom: 18px; }
 .notice.show { display: block; }
@@ -91,3 +94,55 @@ th { color: var(--muted); font-size: 13px; }
     .field.full { grid-column: auto; }
 }
 @media (max-width: 500px) { .stats { grid-template-columns: 1fr; } .page-header { flex-direction: column; } }
+
+/* Shared TalentSync portal polish */
+.topbar-actions { display: flex; align-items: center; gap: 12px; }
+.topbar-profile { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; padding: 6px 8px; border-radius: 12px; transition: background .2s ease; }
+.topbar-profile:hover { background: var(--secondary-background); }
+.topbar-profile > span:last-child { display: flex; flex-direction: column; }
+.topbar-profile small { color: var(--muted); font-size: 11px; margin-top: 2px; }
+.topbar-avatar { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: var(--primary); font-size: 12px; font-weight: 800; }
+.employer-avatar { background: var(--orange); color: #26052C; }
+.topbar-logout { border: 1px solid var(--border); border-radius: 8px; padding: 9px 13px; color: var(--primary); background: #fff; font-weight: 700; cursor: pointer; }
+.topbar-logout:hover { background: var(--secondary-background); }
+.card { border-radius: 15px; box-shadow: 0 8px 24px rgba(38,5,44,.055); transition: transform .2s ease, box-shadow .2s ease; }
+.stat:nth-child(1) { border-left: 4px solid var(--orange); }
+.stat:nth-child(2) { border-left: 4px solid var(--blue); }
+.stat:nth-child(3) { border-left: 4px solid var(--success); }
+.stat:nth-child(4) { border-left: 4px solid var(--success); }
+.stats { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.company-summary, #companyForm { border-left: 4px solid var(--orange); }
+#jobsContainer { border-left: 4px solid var(--blue); }
+#applicantsContainer { border-left: 4px solid var(--success); }
+tbody tr { transition: background .18s ease; }
+tbody tr:hover { background: rgba(124,81,227,.045); }
+.score-bar { height: 7px; margin-top: 6px; border-radius: 999px; overflow: hidden; background: #D6D4E0; }
+.score-bar span { display: block; height: 100%; border-radius: inherit; background: #7C51E3; }
+@media (hover:hover) { .job-card:hover, .company-summary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(38,5,44,.1); } }
+@media (max-width:720px) { .topbar h2 { font-size: 16px; } .topbar-profile > span:last-child { display:none; } .topbar-actions { gap:6px; } .topbar-logout { padding:8px 10px; } }
+
+/* Employer applicants */
+.applicant-filter-card { margin-bottom:18px; border-left:4px solid var(--orange); }
+.applicant-filter-card .field { max-width:520px; }
+.applicant-list { display:grid; gap:12px; }
+.applicant-row { display:grid; grid-template-columns:48px minmax(170px,1.2fr) minmax(130px,.8fr) minmax(155px,.9fr) minmax(230px,1.4fr); align-items:center; gap:16px; padding:17px 18px; border-left:4px solid var(--orange); background:#fff; }
+.applicant-rank { color:var(--primary); font-size:17px; font-weight:800; }
+.applicant-identity { min-width:0; display:flex; flex-direction:column; gap:5px; }
+.applicant-identity strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.applicant-identity span, .applicant-match span { color:var(--muted); font-size:12px; }
+.applicant-match { min-width:110px; }
+.applicant-match strong { display:block; color:var(--active); font-size:18px; }
+.applicant-status { display:grid; justify-items:start; gap:8px; }
+.applicant-status select { width:100%; min-width:145px; padding:8px 9px; border:1px solid var(--border); border-radius:8px; color:var(--text); background:#fff; }
+.applicant-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:7px; }
+.button:disabled { cursor:not-allowed; opacity:.62; }
+.applicant-details-panel { margin-top:18px; border-left:4px solid var(--active); }
+.applicant-details-panel[hidden] { display:none; }
+.section-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
+.applicant-detail-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.applicant-detail-grid > div { padding:14px; border:1px solid var(--border); border-radius:10px; background:var(--card); }
+.applicant-detail-grid span { display:block; margin-bottom:5px; color:var(--muted); font-size:12px; }
+.applicant-detail-grid strong { overflow-wrap:anywhere; font-size:14px; }
+@media (max-width:1100px) { .applicant-row { grid-template-columns:42px minmax(170px,1fr) 125px 150px; } .applicant-actions { grid-column:2 / -1; justify-content:flex-start; } }
+@media (max-width:760px) { .applicant-row { grid-template-columns:40px 1fr; gap:12px; } .applicant-match,.applicant-status,.applicant-actions { grid-column:2; } .applicant-actions { justify-content:flex-start; } .applicant-detail-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:500px) { .applicant-row { grid-template-columns:1fr; } .applicant-rank,.applicant-match,.applicant-status,.applicant-actions { grid-column:1; } .applicant-actions .button { width:100%; } .applicant-detail-grid { grid-template-columns:1fr; } }

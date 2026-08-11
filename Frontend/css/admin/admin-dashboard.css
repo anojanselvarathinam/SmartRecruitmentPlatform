@@ -17,7 +17,7 @@
 .stat-card {
     background: #F6F4F8;
     border: 1px solid #D6D4E0;
-    border-radius: 10px;
+    border-radius: 16px;
     padding: 25px;
     display: flex;
     align-items: center;
@@ -26,8 +26,8 @@
 }
 
     .stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 26px rgba(38, 5, 44, 0.10);
     }
 
 
@@ -38,7 +38,7 @@
 .stat-icon {
     width: 55px;
     height: 55px;
-    border-radius: 10px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,6 +49,11 @@
     background: rgba(124, 81, 227, 0.16);
     color: #7C51E3;
 }
+.stat-card:nth-child(1) { border-left: 4px solid #7C51E3; }
+.stat-card:nth-child(2) { border-left: 4px solid #F99909; }
+.stat-card:nth-child(3) { border-left: 4px solid #6E0654; }
+.stat-card:nth-child(4) { border-left: 4px solid #1578FD; }
+.stat-card:nth-child(5) { border-left: 4px solid #31B552; }
 
 .employers-icon {
     background: rgba(249, 153, 9, 0.16);

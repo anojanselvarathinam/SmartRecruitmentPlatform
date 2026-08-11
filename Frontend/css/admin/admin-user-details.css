@@ -5,7 +5,10 @@
 .user-details-card {
     max-width: 900px;
     margin: 0 auto;
+    border-left: 4px solid #7C51E3;
 }
+.user-details-card.user-role-employer { border-left-color: #F99909; }
+.user-details-card.user-role-jobseeker { border-left-color: #7C51E3; }
 
 
 /* =========================================
@@ -25,7 +28,7 @@
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    background: #2563eb;
+    background: linear-gradient(135deg, #6E0654, #7C51E3);
     color: white;
     display: flex;
     align-items: center;
@@ -33,6 +36,8 @@
     font-size: 28px;
     font-weight: bold;
 }
+.user-role-employer .large-avatar { color: #26052C; background: linear-gradient(135deg, #F9A009, #F99909); }
+.user-role-jobseeker .large-avatar { color: #fff; background: linear-gradient(135deg, #6E0654, #7C51E3); }
 
 .user-profile-header h2 {
     font-size: 22px;
@@ -61,8 +66,9 @@
     flex-direction: column;
     gap: 7px;
     padding: 15px;
-    background: #f9fafb;
-    border-radius: 8px;
+    background: #F6F4F8;
+    border: 1px solid #D6D4E0;
+    border-radius: 11px;
 }
 
 .detail-label {

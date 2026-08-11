@@ -37,19 +37,34 @@ function displayUserDetails() {
     document.getElementById("detailRole").textContent = role;
     document.getElementById("detailStatus").textContent = status;
     document.getElementById("userAvatar").textContent = currentUser.name.charAt(0).toUpperCase();
+    const detailsCard = document.querySelector(".user-details-card");
+    if (detailsCard) {
+        detailsCard.classList.remove("user-role-employer", "user-role-jobseeker");
+        detailsCard.classList.add(currentUser.role === "Employer" ? "user-role-employer" : "user-role-jobseeker");
+    }
     document.getElementById("activateButton").disabled = currentUser.isActive;
     document.getElementById("blockButton").disabled = !currentUser.isActive;
 }
 
 function setupAccountButtons() {
     document.getElementById("activateButton").addEventListener("click", function () {
-        updateAccountStatus(true);
+        showConfirmationModal({
+            title: "Activate Account?",
+            message: "Are you sure you want to activate this account?",
+            confirmText: "Activate",
+            variant: "success",
+            onConfirm: function () { return updateAccountStatus(true); }
+        });
     });
 
     document.getElementById("blockButton").addEventListener("click", function () {
-        if (confirm("Are you sure you want to block this account?")) {
-            updateAccountStatus(false);
-        }
+        showConfirmationModal({
+            title: "Block Account?",
+            message: "Are you sure you want to block this account?",
+            confirmText: "Block",
+            variant: "danger",
+            onConfirm: function () { return updateAccountStatus(false); }
+        });
     });
 }
 

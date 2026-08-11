@@ -368,6 +368,36 @@ app.UseAuthorization();
 app.MapControllers();
 
 
+// TEMPORARY ONE-TIME ADMIN SEED
+// Remove this block after admin@gmail.com has been inserted successfully.
+using (var scope = app.Services.CreateScope())
+{
+    var database = scope.ServiceProvider
+        .GetRequiredService<ApplicationDbContext>();
+
+    const string adminEmail = "admin@gmail.com";
+
+    bool adminExists = await database.Users
+        .AnyAsync(user => user.Email == adminEmail);
+
+    if (!adminExists)
+    {
+        var adminUser = new SmartRecruitmentPlatform.Backend.Models
+            .Authentication.User
+        {
+            FullName = "Admin User",
+            Email = adminEmail,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin<03>"),
+            Role = "Admin",
+            IsActive = true
+        };
+
+        database.Users.Add(adminUser);
+        await database.SaveChangesAsync();
+    }
+}
+
+
 // Run
 
 app.Run();

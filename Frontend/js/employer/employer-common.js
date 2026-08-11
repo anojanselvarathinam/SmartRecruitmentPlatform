@@ -91,21 +91,54 @@ function setActiveEmployerMenu() {
     const page = window.location.pathname.split("/").pop();
     document.querySelectorAll(".nav a").forEach(function (link) {
         const target = link.getAttribute("href").split("?")[0];
-        if (target === page || (page === "job-form.html" && target === "jobs.html") ||
-            (page === "applicants.html" && target === "jobs.html")) link.classList.add("active");
+        if (target === page || (page === "job-form.html" && target === "jobs.html")) {
+            link.classList.add("active");
+        }
     });
+}
+
+function addEmployerApplicantsNavigation() {
+    const navigation = document.querySelector(".nav");
+    if (!navigation || navigation.querySelector('a[href="applicants.html"]')) return;
+    const item = document.createElement("li");
+    item.innerHTML = '<a href="applicants.html">👥 Applicants</a>';
+    navigation.appendChild(item);
 }
 
 function setupEmployerShell() {
     document.getElementById("menuButton")?.addEventListener("click", function () {
         document.querySelector(".sidebar")?.classList.toggle("open");
     });
-    document.getElementById("employerLogout")?.addEventListener("click", function (event) {
-        event.preventDefault();
-        clearEmployerAuthentication();
-        window.location.href = "../Authentication/login.html";
-    });
     setActiveEmployerMenu();
 }
 
-document.addEventListener("DOMContentLoaded", setupEmployerShell);
+function addEmployerTopbarActions() {
+    const topbar = document.querySelector(".topbar");
+    if (!topbar || topbar.querySelector(".topbar-actions")) return;
+    const oldName = topbar.querySelector(".employer-name");
+    const displayName = oldName && oldName.id === "employerName" ? oldName.textContent : "Company Profile";
+    if (oldName) oldName.remove();
+    const actions = document.createElement("div");
+    actions.className = "topbar-actions";
+    actions.innerHTML = `<a class="topbar-profile" href="company.html"><span class="topbar-avatar employer-avatar">E</span><span><strong id="topbarEmployerName">${escapeEmployerHtml(displayName)}</strong><small>Employer</small></span></a><button class="topbar-logout" type="button">Logout</button>`;
+    actions.querySelector(".topbar-logout").addEventListener("click", function () { clearEmployerAuthentication(); window.location.href = "../Authentication/login.html"; });
+    topbar.appendChild(actions);
+}
+
+function initializeEmployerShell() {
+    removeEmployerSidebarLogout();
+    addEmployerApplicantsNavigation();
+    addEmployerTopbarActions();
+    setupEmployerShell();
+}
+
+function removeEmployerSidebarLogout() {
+    document.querySelectorAll(".sidebar .nav a").forEach(function (link) {
+        if (link.textContent.trim().toLowerCase().includes("logout")) {
+            const menuItem = link.closest("li");
+            if (menuItem) menuItem.remove();
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", initializeEmployerShell);
