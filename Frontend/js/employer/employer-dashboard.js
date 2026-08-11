@@ -8,7 +8,8 @@ async function loadEmployerDashboard() {
         const employerResponse = await employerFetch(`/api/Employer/${employerId}`);
         if (!employerResponse.ok) throw new Error(await readApiError(employerResponse, "Unable to load Employer account."));
         const employer = await employerResponse.json();
-        document.getElementById("employerName").textContent = employer.fullName;
+        const employerName = document.getElementById("topbarEmployerName") || document.getElementById("employerName");
+        if (employerName) employerName.textContent = employer.fullName;
 
         const companyResponse = await employerFetch(`/api/Company/employer/${employerId}`);
         if (companyResponse.status === 404) {
@@ -27,6 +28,12 @@ async function loadEmployerDashboard() {
         const jobs = await jobsResponse.json();
         document.getElementById("jobCount").textContent = jobs.length;
         document.getElementById("activeJobCount").textContent = jobs.filter(job => job.isActive).length;
+        const applicantResponses = await Promise.all(jobs.map(job => employerFetch(`/api/Applicant/job/${job.jobId}`)));
+        let applicationCount = 0;
+        for (const response of applicantResponses) {
+            if (response.ok) applicationCount += (await response.json()).length;
+        }
+        document.getElementById("employerApplicationCount").textContent = applicationCount;
     } catch (error) {
         showEmployerNotice(error.message, "error");
         document.getElementById("dashboardMessage").textContent = "Dashboard data could not be loaded.";

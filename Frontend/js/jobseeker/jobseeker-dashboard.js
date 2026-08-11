@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         const profile = await responses[0].json();
         const applications = responses[1].ok ? await responses[1].json() : [];
         const notifications = responses[2].ok ? await responses[2].json() : [];
-        document.getElementById("seekerName").textContent = `${profile.firstName} ${profile.lastName}`.trim();
+        const seekerName = document.getElementById("topbarUserName") || document.getElementById("seekerName");
+        if (seekerName) seekerName.textContent = `${profile.firstName} ${profile.lastName}`.trim();
         document.getElementById("skillCount").textContent = profile.skills.length;
         document.getElementById("applicationCount").textContent = applications.length;
         document.getElementById("notificationCount").textContent = notifications.filter(item => !item.isRead).length;

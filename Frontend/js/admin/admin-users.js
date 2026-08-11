@@ -12,17 +12,21 @@ async function loadUsers() {
         const response = await adminApiFetch("/api/admin/users");
         if (!response.ok) throw new Error("Unable to load users.");
 
-        allUsers = await response.json();
+        const users = await response.json();
+        allUsers = users.filter(function (user) {
+            return user.role === "Employer" || user.role === "JobSeeker";
+        });
         displayUsers(allUsers);
     } catch (error) {
+        document.getElementById("usersTableBody").innerHTML = '<tr><td colspan="5" class="user-list-loading">Users could not be loaded.</td></tr>';
         handleAdminApiError(error);
     }
 }
 
 function displayUsers(users) {
-    const tableBody = document.getElementById("usersTableBody");
+    const userList = document.getElementById("usersTableBody");
     const noUsersMessage = document.getElementById("noUsersMessage");
-    tableBody.innerHTML = "";
+    userList.innerHTML = "";
 
     if (users.length === 0) {
         noUsersMessage.style.display = "block";
@@ -36,17 +40,18 @@ function displayUsers(users) {
         const roleClass = user.role === "Employer"
             ? "role-employer"
             : "role-jobseeker";
+        row.className = roleClass;
         const status = user.isActive ? "Active" : "Blocked";
         const statusClass = user.isActive ? "status-active" : "status-blocked";
 
         row.innerHTML = `
-            <td>${escapeHtml(user.name)}</td>
-            <td>${escapeHtml(user.email)}</td>
+            <td><div class="user-identity ${roleClass}"><span class="user-row-avatar">${escapeHtml(user.name.charAt(0).toUpperCase())}</span><span>${escapeHtml(user.name)}</span></div></td>
+            <td class="user-email">${escapeHtml(user.email)}</td>
             <td><span class="role-badge ${roleClass}">${escapeHtml(formatRole(user.role))}</span></td>
             <td><span class="status-badge ${statusClass}">${status}</span></td>
-            <td><button class="view-user-btn" onclick="viewUser(${user.id})">View</button></td>`;
+            <td class="user-action"><button class="view-user-btn" onclick="viewUser(${user.id})">View</button></td>`;
 
-        tableBody.appendChild(row);
+        userList.appendChild(row);
     });
 }
 

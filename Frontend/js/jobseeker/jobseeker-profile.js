@@ -22,10 +22,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!checkJobSeekerAuthentication()) return;
     loadSeekerProfile();
     document.getElementById("profileForm").addEventListener("submit", saveProfile);
-    document.getElementById("skillForm").addEventListener("submit", addSkill);
     document.getElementById("educationForm").addEventListener("submit", addEducation);
     document.getElementById("experienceForm").addEventListener("submit", addExperience);
-    document.getElementById("cvForm").addEventListener("submit", uploadCv);
 });
 
 async function loadSeekerProfile() {
@@ -39,10 +37,10 @@ async function loadSeekerProfile() {
 }
 
 function renderProfileLists() {
-    renderList("skillsList", seekerProfile.skills, item => `<div><strong>${escapeJobSeekerHtml(item.skillName)}</strong><p>${escapeJobSeekerHtml(item.skillLevel || "Level not specified")}</p></div><button class="button button-danger button-small" onclick="deleteProfileItem('skills',${item.id})">Delete</button>`);
+    document.getElementById("skillsList").innerHTML = seekerProfile.skills.length ? seekerProfile.skills.map(item => `<span class="skill-chip">${escapeJobSeekerHtml(item.skillName)} · ${escapeJobSeekerHtml(item.skillLevel || "Not specified")}</span>`).join("") : '<div class="empty">No skills saved. Use Manage Skills to add them.</div>';
     renderList("educationList", seekerProfile.educations, item => `<div><strong>${escapeJobSeekerHtml(item.degree)}</strong><p>${escapeJobSeekerHtml(item.institution)} · ${formatJobSeekerDate(item.startDate)}–${formatJobSeekerDate(item.endDate)}</p></div><button class="button button-danger button-small" onclick="deleteProfileItem('education',${item.id})">Delete</button>`);
     renderList("experienceList", seekerProfile.experiences, item => `<div><strong>${escapeJobSeekerHtml(item.jobTitle)}</strong><p>${escapeJobSeekerHtml(item.companyName)} · ${formatJobSeekerDate(item.startDate)}–${formatJobSeekerDate(item.endDate)}</p></div><button class="button button-danger button-small" onclick="deleteProfileItem('experience',${item.id})">Delete</button>`);
-    renderList("cvList", seekerProfile.cvDocuments, item => `<div><strong>${escapeJobSeekerHtml(item.fileName)}</strong><p>${Math.ceil(item.fileSize / 1024)} KB · ${formatJobSeekerDate(item.uploadedAt)}</p></div><button class="button button-danger button-small" onclick="deleteProfileItem('cv',${item.id})">Delete</button>`);
+    renderList("cvList", seekerProfile.cvDocuments, item => `<div><strong>${escapeJobSeekerHtml(item.fileName)}</strong><p>${Math.ceil(item.fileSize / 1024)} KB · Uploaded ${formatJobSeekerDate(item.uploadedAt)}</p></div><a class="button button-secondary button-small" href="cv.html">Manage</a>`);
 }
 
 function renderList(id, items, template) { document.getElementById(id).innerHTML = items.length ? items.map(item => `<div class="list-item">${template(item)}</div>`).join("") : '<div class="empty">No records added.</div>'; }
@@ -54,6 +52,7 @@ async function addExperience(event) { event.preventDefault(); const payload = { 
 
 async function uploadCv(event) { event.preventDefault(); const file = cvFile.files[0]; if (!file) return; const form = new FormData(); form.append("file", file); try { const response = await jobSeekerFetch("/api/jobseeker/cv", { method: "POST", body: form }); if (!response.ok) throw new Error(await jobSeekerError(response, "CV upload failed.")); seekerProfile.cvDocuments.push(await response.json()); event.target.reset(); renderProfileLists(); showJobSeekerNotice("CV uploaded."); } catch (error) { showJobSeekerNotice(error.message, "error"); } }
 
-async function deleteProfileItem(type, id) { if (!confirm("Delete this record?")) return; try { const response = await jobSeekerFetch(`/api/jobseeker/${type}/${id}`, { method: "DELETE" }); if (!response.ok) throw new Error(await jobSeekerError(response, "Delete failed.")); const property = type === "skills" ? "skills" : type === "education" ? "educations" : type === "experience" ? "experiences" : "cvDocuments"; seekerProfile[property] = seekerProfile[property].filter(item => item.id !== id); renderProfileLists(); showJobSeekerNotice("Record deleted."); } catch (error) { showJobSeekerNotice(error.message, "error"); } }
+function deleteProfileItem(type, id) { const itemNames = { skills: "Skill", education: "Education", experience: "Experience", cv: "CV" }; const itemName = itemNames[type] || "Record"; showConfirmationModal({ title: `Delete ${itemName}?`, message: "Are you sure you want to delete this record? This action cannot be undone.", confirmText: "Delete", variant: "danger", onConfirm: function () { return deleteProfileItemRequest(type, id); } }); }
+async function deleteProfileItemRequest(type, id) { try { const response = await jobSeekerFetch(`/api/jobseeker/${type}/${id}`, { method: "DELETE" }); if (!response.ok) throw new Error(await jobSeekerError(response, "Delete failed.")); const property = type === "skills" ? "skills" : type === "education" ? "educations" : type === "experience" ? "experiences" : "cvDocuments"; seekerProfile[property] = seekerProfile[property].filter(item => item.id !== id); renderProfileLists(); showJobSeekerNotice("Record deleted."); } catch (error) { showJobSeekerNotice(error.message, "error"); } }
 
 async function sendProfileRequest(url, method, payload, message) { try { const response = await jobSeekerFetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }); if (!response.ok) throw new Error(await jobSeekerError(response, "Request failed.")); const data = await response.json(); if (url.endsWith("/profile")) seekerProfile = data; showJobSeekerNotice(message); return data; } catch (error) { showJobSeekerNotice(error.message, "error"); return null; } }

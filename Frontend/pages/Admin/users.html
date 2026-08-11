@@ -58,13 +58,6 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="#" id="adminLogout">
-                        <span class="menu-icon">↪</span>
-                        Logout
-                    </a>
-                </li>
-
             </ul>
 
         </aside>
@@ -163,10 +156,6 @@
                                 Employer
                             </option>
 
-                            <option value="Admin">
-                                Admin
-                            </option>
-
                         </select>
 
                     </div>
@@ -179,33 +168,17 @@
                 <div class="user-table-card admin-card">
 
                     <div class="table-responsive">
-
                         <table class="user-table">
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>Name</th>
-
-                                    <th>Email</th>
-
-                                    <th>Role</th>
-
-                                    <th>Status</th>
-
-                                    <th>Action</th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody id="usersTableBody">
-                            </tbody>
-
+                            <colgroup>
+                                <col class="name-column">
+                                <col class="email-column">
+                                <col class="role-column">
+                                <col class="status-column">
+                                <col class="action-column">
+                            </colgroup>
+                            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Action</th></tr></thead>
+                            <tbody id="usersTableBody"><tr><td colspan="5" class="user-list-loading">Loading users...</td></tr></tbody>
                         </table>
-
                     </div>
 
 
